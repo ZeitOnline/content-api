@@ -5,3 +5,6 @@
 
 ###30. Nov 2012
 * [FIXED] Related articles now have proper titles
+
+###23. Nov 2012
+* [ADDED] Initial beta release
