@@ -1,5 +1,8 @@
 ##Changelog
 
+###2. Jan 2013
+* [IMPROVED] API explorer performance
+
 ###21. Dec 2012
 * [IMPROVED] General documentation expanded
 * [IMPROVED] Cosmetic changes at developer portal
