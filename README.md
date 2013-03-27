@@ -1,28 +1,50 @@
-##Changelog
+#Content-API
 
-###2. Jan 2013
-* [IMPROVED] API explorer performance
+ZEIT ONLINE content API - A [flask](http://flask.pocoo.org/) –
+[Solr](http://lucene.apache.org/solr/) middleware
 
-###21. Dec 2012
-* [IMPROVED] General documentation expanded
-* [IMPROVED] Cosmetic changes at developer portal
-* [DEPRECATED] App Gallery removed, now only at our blog
 
-###20. Dec 2012
-* [FIXED] Server errors at /content resolved
-* [FIXED] UTF8 support for all parameters
-* [IMPROVED] Performance optimizations for /author
-* [ADDED] Id field for non-content searches
-* [ADDED] Href field for authors, if available
+##Frequent questions
 
-###05. Dec 2012
-* [ADDED] Uuid field for content objects
+###What is this?
+This is the ZEIT ONLINE content API project as available at
+http://developer.zeit.de. It enables you to access articles and corresponding
+metadata from the ZEIT newspaper archive, as well as recent articles from ZEIT
+and ZEIT ONLINE.
 
-###04. Dec 2012
-* [FIXED] Response header gets proper encoding
+###Is it ready?
+It is still in public beta. We are working on improving the quality of our data
+as well as the stability of our code. You are welcome to test and experiment
+with the API, take a look at the code, file a bug report or request a feature.
 
-###30. Nov 2012
-* [FIXED] Related articles now have proper titles
+###Where are the docs?
+You can find the documentation at our developer portal over at
+http://developer.zeit.de
 
-###23. Nov 2012
-* [ADDED] Initial beta release
+###Can I run the API locally?
+Yes. It is tailored to the infrastructure we have here at ZEIT ONLINE, though.
+So it might not be of too much use for other scenarios and will require some
+adaptation. See below for instructions.
+
+###How can I get in touch?
+We would love to hear your ideas and feedback. Join the discussion in the
+[issues section](http://github.com/ZeitOnline/content-api/issues), contact us
+on twitter at [zeitonline_dev](http://twitter.com/zeitonline_dev) or send an
+email to [api@zeit.de](mailto:api@zeit.de).
+
+
+##Getting started
+
+Check out the repository, change to the project folder and bootstrap the
+project like this:
+
+    $ python bootstrap.py
+
+Now run buildout with the development configuration:
+
+    $ bin/buildout -c dev.cfg
+
+This will install dependencies and generate executables for the API, the
+developer portal and the testsuite in the bin folder.
+
+    $ bin/api

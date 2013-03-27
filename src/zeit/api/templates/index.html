@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block docTitle %}ZEIT ONLINE Content API{% endblock %}
+{% block docBody %}
+<div id="indexImg">
+    <p class="indexImgCredit">Visualization by Gregor Aisch</p>
+</div>
+<br/>
+<p>
+    Willkommen zu der Beta-Version der ZEIT ONLINE Content API.
+    Über diese Schnittstelle kann auf Inhalte und zugehörige Metadaten aus
+    dem Archiv der ZEIT seit 1946 und von ZEIT ONLINE zugegriffen werden kann.
+    Wir laden alle an Programmierung, Datenanalyse und Visualisierung
+    Interessierten ein, den Index aus mehreren hunderttausenden Artikeln zu
+    erkunden. Die Benutzung der Schnittstelle ist für nicht-kommerzielle
+    Anwendungsfälle kostenlos. Bitte beachten Sie in jedem Falle die 
+    <a href="{{ doc_url }}/licence">Nutzungsbedingungen</a>.
+</p>
+<p>
+    Um gleich mit dem Erstellen von Anwendungen oder Auswertungen zu beginnen,
+    können Sie sich unter <a href="{{ doc_url }}/quickstart">Quickstart</a>
+    einen API-Key freischalten lassen. Der
+    <a href="{{ doc_url }}/explorer">Explorer</a> ermöglicht Ihnen die
+    Befragung der Schnittstelle über ein einfaches Web-Interface. Mehr über die
+    Funktionen und Endpunkte der API erfahren Sie in der englischen
+    <a href="{{ doc_url }}/docs">Dokumentation</a>.
+</p>
+<p>
+    Wir laden Sie ein, uns Ihre Umsetzungen, Experimente und
+    Erfahrungen mit der API via <a href="mailto:api@zeit.de">Email</a>
+    oder <a href="https://twitter.com/zeitonline_dev" target="_blank">
+    Twitter</a> mitzuteilen. Aktuelle Informationen und spannende Projekte mit
+    der API finden Sie auf dem ZEIT ONLINE <a href="http://blog.zeit.de/dev/">
+    Dev-Blog</a>.
+</p>
+<hr/>
+<p>
+    Welcome to the beta version of the ZEIT ONLINE content API. Via the API you
+    can access articles and corresponding metadata from the ZEIT archive dating
+    back to 1946 and from ZEIT ONLINE. We invite everybody interested in
+    programming, data analysis and visualization to explore the index of
+    hundreds of thousands articles. The API can be used for free for
+    non-commercial use cases. Please refer to the
+    <a href="{{ doc_url }}/licence"> terms of use</a> (German only at the
+    moment).
+</p>
+<p>
+    To get started building apps or analysing data, just request an API key
+    in our <a href="{{ doc_url }}/quickstart">quickstart guide</a>. The
+    <a href="{{ doc_url }}/explorer">explorer</a> will allow you to query
+    the API via a simple web-interface. A full <a href="{{ doc_url }}/docs">
+    documentation</a> of the endpoints and their capabilites is also available.
+</p>
+<p>
+    We invite you to share your apps, experiments and experiences with the API
+    with us via <a href="mailto:api@zeit.de">email</a> and
+    <a href="https://twitter.com/zeitonline_dev" target="_blank">Twitter</a>.
+    More news and a roundup of projects using our API can be found at the
+    ZEIT ONLINE <a href="http://blog.zeit.de/dev/">Dev-Blog</a>.
+</p>
+
+{% endblock %}

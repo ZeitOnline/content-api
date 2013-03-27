@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block docTitle %}Client{% endblock %}
+{% block docBody %}
+
+<h2 id="search">Observe your usage</h2>
+
+<p>
+	The user endpoint is not a content resource per se, but lets you get
+	information about your API usage. As this is sensitive information,
+	requests must be authorized. Parameters are not required.
+</p>
+
+<h3>Endpoint</h3>
+<pre><code>{{ api_url }}/client</code></pre>
+
+<h2>Example</h2>
+
+<h3>Request</h3>
+<pre><code>GET /client HTTP/1.1
+Host: {{ api_url }}
+X-Authorization: abcdefg1234xyz56789
+</code></pre>
+
+<h3>Response</h3>
+<pre><code>{
+    "reset": 1352820867,
+    "tier": "free",
+    "name": "Jane Mustermann",
+    "email": "jane@muster.com"
+    "requests": 13,
+    "api_key": "abcdefg1234xyz56789",
+    "quota": 10000
+}
+</code></pre>
+{% endblock %}

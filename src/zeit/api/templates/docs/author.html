@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block docTitle %}Author{% endblock %}
+{% block docBody %}
+
+<h2 id"search">Search all authors</h2>
+<p>
+  This endpoint lets you search for authors by their name. The result is a list
+  of possible matches with a displayable value, a URI to an article overview
+  within the API and, if available, a link to all articles by this author on
+  www.zeit.de.
+</p>
+
+<h3>Endpoint</h3>
+<pre><code>{{ api_url }}/author</code></pre>
+
+<h3>Parameter</h3>
+<code>
+  <table>
+    <tr>
+      <td>q<span class="default">*</span></td>
+      <td>main search query with asterisk as wildcard</td>
+    </tr>
+    <tr>
+      <td>fields<span class="default">href,id,type,uri,value</span></td>
+      <td>partially select output fields</td>
+    </tr>
+    <tr>
+      <td>limit<span class="default">10</span></td>
+      <td>amount of matches to return</td>
+    </tr>
+    <tr>
+      <td>offset<span class="default">0</span></td>
+      <td>offset for the list of matches</td>
+    </tr>
+  </table>
+</code>
+
+<h2>Example</h2>
+
+<h3>Request</h3>
+<pre><code>GET /author?q=James*Muster*&limit=1 HTTP/1.1
+Host: {{ api_url }}
+X-Authorization: abcdefg1234xyz56789
+</code></pre>
+
+<h3>Response</h3>
+<pre><code>{
+  "matches": [
+    {
+      "href": "http://www.zeit.de/autoren/J/James_Mustermann/index.xml",
+      "type": "author",
+      "id": "James-Mustermann",
+      "value": "James Mustermann",
+      "uri": "{{ api_url }}/author/James-Mustermann"
+    }
+  ], 
+  "found": 3, 
+  "limit": 1, 
+  "offset": 0
+}</code></pre>
+
+<hr/>
+
+<h2 id="by-id">Get author by ID</h2>
+
+<p>
+  This endpoint provides a pre-filtered search for all articles written by a
+  specific author. Deeper queries, pagination and partial field selection can
+  be used to narrow down the match list.
+</p>
+
+<h3>Endpoint</h3>
+<pre><code>{{ api_url }}/author/{id}</code></pre>
+
+<h3>Parameter</h3>
+<code>
+  <table>
+    <tr>
+      <td>q<span class="default">*:*</span></td>
+      <td>the main search query</td>
+    </tr>
+    <tr>
+      <td>fields<span class="default">*</span></td>
+      <td>partially select output fields</td>
+    </tr>
+    <tr>
+      <td>limit<span class="default">10</span></td>
+      <td>limit the amount of matches to return</td>
+    </tr>
+    <tr>
+      <td>offset<span class="default">0</span></td>
+      <td>offset for the list of matches</td>
+    </tr>
+  </table>
+</code>
+
+<h2>Example</h2>
+
+<h3>Request</h3>
+<pre><code>GET /author/Jasmine-Mustermann?limit=1 HTTP/1.1
+Host: {{ api_url }}
+X-Authorization: abcdefg1234xyz56789
+</code></pre>
+
+<h3>Response</h3>
+<pre><code>{
+  "value": "Jasmine Mustermann", 
+  "matches": [
+    {
+      "subtitle": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+        sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.", 
+      "title": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.", 
+      "href": "http://www.zeit.de/department/sub/2012-12/Lorem-ipsum", 
+      "release_date": "2011-12-01T14:40:00.000Z", 
+      "uri": "{{ api_url }}/content/1111122299xxcc99aa", 
+      "supertitle": "Lorem Ipsum", 
+      "teaser_title": "Lorem ipsum dolor sit amet, consetetur sadipscing."
+    }
+  ], 
+  "uri": "{{ api_url }}/author/Jasmine-Mustermann",
+  "type": "author",
+  "limit": 1, 
+  "offset": 0, 
+  "found": 12
+}</code></pre>
+
+{% endblock %}

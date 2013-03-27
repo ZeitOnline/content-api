@@ -1,0 +1,341 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" lang="de-de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>ZEIT ONLINE | Developer</title>
+<meta name="apple-itunes-app" content="app-id=448633376">
+<meta name="description" content="With the ZEIT ONLINE content API you can query metadata about our newspaper archive as well as current articles.">
+<meta name="robots" content="index,follow,noodp,noydir,noarchive">
+<meta name="author" content="ZEIT ONLINE GmbH, Hamburg, Germany">
+<meta property="og:site_name" content="ZEIT ONLINE">
+<meta property="fb:admins" content="595098294">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Developer">
+<meta property="og:site_name" content="ZEIT ONLINE">
+<meta property="fb:admins" content="595098294">
+<meta property="og:type" content="article">
+<link href="http://css.zeit.de/static/css/base.css?272" media="screen" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ doc_url }}/style.css">
+<link rel="shortcut icon" href="http://images.zeit.de/static/img/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="http://images.zeit.de/static/img/ZO-icon-72x72.png">
+<script type="text/javascript">
+	window.zeitversion = 272;
+	window.js_path = "http://scripts.zeit.de/static/js";
+	window.css_path = "http://css.zeit.de/static/css";
+	window.www_root = "http://www.zeit.de";
+</script>
+<script type="text/javascript" src="http://scripts.zeit.de/static/js/iqd/adam.js"></script>
+<script type="text/javascript" src="http://scripts.zeit.de/static/js/jquery/1.4.2/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://scripts.zeit.de/static/js/jquery/plugins/jquery.lazy/jquery.lazy.js?272"></script>
+<script type="text/javascript" src="http://scripts.zeit.de/static/js/base.js?272"></script>
+</head>
+<body id="zeit-de" data-page_type="frame" class="body-administratives ipad-frame" data-ressort="administratives" data-banner_channel="administratives/centerpage" data-ad_channel="administratives" data-date_last_modified="2012-11-21T12:22:15.111488+00:00" data-date_first_released="2012-11-21T10:15:18.007690+00:00" data-date_last_published="2012-11-21T12:23:14.987318+00:00" data-smk_path="/canvas/developer">
+	<div id="countings" style="display:none;">
+<script type="text/javascript">
+			var IVW="http://zeitonl.ivwbox.de/cgi-bin/ivw/CP/rahmen/developer;";
+			document.write("<img src=\""+IVW+"?r="+escape(document.referrer)+"&d="+(Math.random()*100000)+"\" alt=\"smztag\" width=\"1\" height=\"1\" />");
+</script>
+<noscript><img alt="szmtag" src="http://zeitonl.ivwbox.de/cgi-bin/ivw/CP/rahmen/developer;" height="1" width="1"></noscript>
+<script type="text/javascript">
+	var Z_IVW_RESSORT = 'rahmen/developer';
+	var Z_WT_KENNUNG = 'redaktion.administratives...rahmen.online./canvas/developer';
+</script>	
+</div>
+<div id="wrapper" class="center">
+<div id="header">
+<div class="nav">
+<ul class="topnav1">
+<li class="first"><a href="http://www.zeitabo.de/?mcwt=2009_07_0002" id="hp.global.topnav.links.abo">Abo</a></li>
+<li><a href="http://shop.zeit.de?et=l6VVNm&amp;et_cid=42&amp;et_lid=175&amp;et_sub=Startseite_header" id="hp.global.topnav.links.shop">Shop</a></li>
+<li><a href="https://premium.zeit.de/abo/digitalpaket" id="hp.global.topnav.links.epaper">E-Paper</a></li>
+<li><a href="http://www.zeit.de/angebote/ebook/index" id="hp.global.topnav.links.ebooks">E-Books</a></li>
+<li><a href="https://premium.zeit.de/abo/audio" id="hp.global.topnav.links.audio">Audio</a></li>
+<li><a href="http://community.zeit.de/newsletter" id="hp.global.topnav.links.newsletter">Newsletter</a></li>
+<li><a href="http://www.zeit.de/archiv" id="hp.global.topnav.links.archiv">Archiv</a></li>
+<li><a href="http://www.zeit.de/spiele/index" id="hp.global.topnav.links.spiele">Spiele</a></li>
+<li><a href="http://www.zeit.de/blogs/index" id="hp.global.topnav.links.blogs">Blogs</a></li>
+<li><a href="http://www.zeit.de/foto/index" id="hp.global.topnav.links.foto">Fotostrecken</a></li>
+<li><a href="http://www.zeit.de/video" id="hp.global.topnav.links.video">Video</a></li>
+<li class="last"><a href="http://www.zeit.de/news/index" id="hp.global.topnav.links.schlagzeilen">Schlagzeilen</a></li>
+</ul>
+<ul class="topnav2">
+<li class="first"><a href="http://www.zeit.de/zeit-magazin/index" id="hp.global.topnav.links.zeitmagazin"><span>ZEIT</span>magazin</a></li>
+<li><a href="http://www.zeit.de/campus/index" id="hp.global.topnav.links.zeitcampus"><span>ZEIT</span>Campus</a></li>
+<li><a href="http://www.zeit.de/wissen/zeit-geschichte/index" id="hp.global.topnav.links.zeitgeschichte"><span>ZEIT</span>Geschichte</a></li>
+<li class="last"><a href="http://www.zeit.de/wissen/zeit-wissen/index" id="hp.global.topnav.links.zeitwissen"><span>ZEIT</span>Wissen</a></li>
+</ul>
+</div>
+<div class="logo">
+<a href="http://www.zeit.de/index" title="ZEIT ONLINE" class="zeitonline">ZEIT ONLINE</a>
+<h1 class="cap"><a class="caplink" id="hp.global.topnav.Ressort.administratives" href="{{ doc_url }}">Developer</a></h1>
+<form accept-charset="utf-8" method="get" action="http://www.zeit.de/suche/index"><div>
+<label title="ZEIT ONLINE durchsuchen"><input class="itext" id="q" name="q" size="30" type="text" onfocus="this.select();"></label><input class="isubmit" type="submit" value="Suchen">
+</div></form>
+<ul class="topnav3">
+<li class="first"><a href="http://www.zeit.de/angebote/partnersuche/index?pscode=01_100_20003_0001_0001_0005_empty_AF00ID_GV00ID" id="hp.global.topnav.links.partnersuche">Partnersuche</a></li>
+<li><a href="http://zeit.immowelt.de/" id="hp.global.topnav.links.immobilien">Immobilien</a></li>
+<li><a href="http://automarkt.zeit.de/" id="hp.global.topnav.links.automarkt">Automarkt</a></li>
+<li><a href="http://jobs.zeit.de/" id="hp.global.topnav.links.jobs">Jobs</a></li>
+<li class="last"><a href="http://zeitreisen.zeit.de/" id="hp.global.topnav.links.reiseangebote">Reiseangebote</a></li>
+</ul>
+</div>
+<ul class="mainnav">
+<li class="first"><a href="http://www.zeit.de/index">Startseite</a></li>
+<li>
+<a href="http://www.zeit.de/politik/index">Politik</a><ul>
+<li class="first"><a href="http://www.zeit.de/politik/deutschland/index">Deutschland</a></li>
+<li class="last"><a href="http://www.zeit.de/politik/ausland/index">Ausland</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/wirtschaft/index">Wirtschaft</a><ul>
+<li class="first"><a href="http://www.zeit.de/wirtschaft/unternehmen/index">Unternehmen</a></li>
+<li><a href="http://www.zeit.de/wirtschaft/geldanlage/index">Geldanlage</a></li>
+<li class="last"><a href="http://www.zeit.de/wirtschaft/boerse/index">Börse</a></li>
+</ul>
+</li>
+<li><a href="http://www.zeit.de/meinung/index">Meinung</a></li>
+<li>
+<a href="http://www.zeit.de/gesellschaft/index">Gesellschaft</a><ul>
+<li class="first"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/index">Zeitgeschehen</a></li>
+<li><a href="http://www.zeit.de/gesellschaft/familie/index">Familie</a></li>
+<li class="last"><a href="http://www.zeit.de/gesellschaft/schule/index">Schule</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/kultur/index">Kultur</a><ul>
+<li class="first"><a href="http://www.zeit.de/kultur/literatur/index">Literatur</a></li>
+<li><a href="http://www.zeit.de/kultur/film/index">Film &amp; TV</a></li>
+<li><a href="http://www.zeit.de/kultur/musik/index">Musik</a></li>
+<li class="last"><a href="http://www.zeit.de/kultur/kunst/index">Kunst</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/wissen/index">Wissen</a><ul>
+<li class="first"><a href="http://www.zeit.de/wissen/gesundheit/index">Gesundheit</a></li>
+<li><a href="http://www.zeit.de/wissen/umwelt/index">Umwelt</a></li>
+<li class="last"><a href="http://www.zeit.de/wissen/geschichte/index">Geschichte</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/digital/index">Digital</a><ul>
+<li class="first"><a href="http://www.zeit.de/digital/internet/index">Internet</a></li>
+<li><a href="http://www.zeit.de/digital/datenschutz/index">Datenschutz</a></li>
+<li><a href="http://www.zeit.de/digital/mobil/index">Mobil</a></li>
+<li class="last"><a href="http://www.zeit.de/digital/games/index">Games</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/studium/index">Studium</a><ul>
+<li class="first"><a href="http://www.zeit.de/studium/uni-leben/index">Uni-Leben</a></li>
+<li><a href="http://www.zeit.de/studium/hochschule/index">Hochschule</a></li>
+<li><a href="http://www.zeit.de/studium/rankings/index">Rankings</a></li>
+<li class="last"><a href="http://www.zeit.de/studium/studiengaenge">Studiengänge</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/karriere/index">Karriere</a><ul>
+<li class="first"><a href="http://www.zeit.de/karriere/bewerbung/index">Bewerbung</a></li>
+<li class="last"><a href="http://www.zeit.de/karriere/beruf/index">Beruf</a></li>
+</ul>
+</li>
+<li>
+<a href="http://www.zeit.de/lebensart/index">Lebensart</a><ul>
+<li class="first"><a href="http://www.zeit.de/lebensart/mode/index">Mode</a></li>
+<li><a href="http://www.zeit.de/lebensart/essen-trinken/index">Essen &amp; Trinken</a></li>
+<li class="last"><a href="http://www.zeit.de/lebensart/partnerschaft/index">Partnerschaft</a></li>
+</ul>
+</li>
+<li><a href="http://www.zeit.de/reisen/index">Reisen</a></li>
+<li><a href="http://www.zeit.de/auto/index">Auto</a></li>
+<li class="last"><a href="http://www.zeit.de/sport/index">Sport</a></li>
+</ul>
+</div>
+<div id="content" class="section">
+<div id="main">
+
+<h1>{% block docTitle %}{% endblock %}</h1>
+{% block docBody %}{% endblock %}
+
+</div>
+<div id="informatives">
+	<ul class="sidenav">
+		<li id="sidenavHeader" class="{% if file == 'index' %}current{% endif %}">
+			<a href="{{ doc_url }}">Content API</a>
+		</li>
+		<li class="{% if file == 'quickstart' %}current{% endif %}">
+			<a href="{{ doc_url }}/quickstart">Quick Start</a>
+		</li>
+		<li class="{% if file == 'explorer' %}current{% endif %}">
+			<a href="{{ doc_url }}/explorer">API Explorer</a>
+		</li>
+		<li class="{% if file == 'licence' %}current{% endif %}">
+			<a href="{{ doc_url }}/licence">Licence</a>
+		</li>
+		<li class="{% if file == 'docs' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs">Documentation</a>
+		</li>
+		<li class="indent {% if file == 'author' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/author">Author</a>
+		</li>
+		<li class="indent {% if file == 'client' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/client">Client</a>
+		</li>
+		<li class="indent {% if file == 'content' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/content">Content</a>
+		</li>
+		<li class="indent {% if file == 'department' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/department">Department</a>
+		</li>
+		<li class="indent {% if file == 'keyword' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/keyword">Keyword</a>
+		</li>
+		<li class="indent {% if file == 'product' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/product">Product</a>
+		</li>
+		<li class="indent {% if file == 'series' %}current{% endif %}">
+			<a href="{{ doc_url }}/docs/series">Series</a>
+		</li>
+	</ul>
+
+<iframe class="sidenavLink" src="http://ghbtns.com/github-btn.html?user=ZeitOnline&repo=content-api&type=follow&count=true" frameborder="0" scrolling="0" width="165" height="20"></iframe>
+<a class="sidenavLink sidenavBlogLink" href="http://blog.zeit.de/dev/" target="_blank">Zeit Online Developer Blog</a>
+<a href="https://twitter.com/zeitonline_dev" class="twitter-follow-button" data-show-count="false" data-width="180px" data-lang="en">Follow @zeitonline_dev</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+</div>
+</div>
+</div>
+<div id="bottom">
+<div class="footer1"><div class="center">
+<ul class="bottomnav">
+<li class="startseite first"><a href="http://www.zeit.de/index" class="groupleader">Startseite</a></li>
+<li class="politik">
+<a href="http://www.zeit.de/politik/index" class="groupleader">Politik</a><ul>
+<li class="deutschland first"><a href="http://www.zeit.de/politik/deutschland/index">Deutschland</a></li>
+<li class="ausland  last"><a href="http://www.zeit.de/politik/ausland/index">Ausland</a></li>
+</ul>
+</li>
+<li class="wirtschaft">
+<a href="http://www.zeit.de/wirtschaft/index" class="groupleader">Wirtschaft</a><ul>
+<li class="unternehmen first"><a href="http://www.zeit.de/wirtschaft/unternehmen/index">Unternehmen</a></li>
+<li class="geldanlage"><a href="http://www.zeit.de/wirtschaft/geldanlage/index">Geldanlage</a></li>
+<li class="boerse  last"><a href="http://www.zeit.de/wirtschaft/boerse/index">Börse</a></li>
+</ul>
+</li>
+<li class="meinung"><a href="http://www.zeit.de/meinung/index" class="groupleader">Meinung</a></li>
+<li class="gesellschaft">
+<a href="http://www.zeit.de/gesellschaft/index" class="groupleader">Gesellschaft</a><ul>
+<li class="zeitgeschehen first"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/index">Zeitgeschehen</a></li>
+<li class="familie"><a href="http://www.zeit.de/gesellschaft/familie/index">Familie</a></li>
+<li class="schule  last"><a href="http://www.zeit.de/gesellschaft/schule/index">Schule</a></li>
+</ul>
+</li>
+<li class="kultur">
+<a href="http://www.zeit.de/kultur/index" class="groupleader">Kultur</a><ul>
+<li class="literatur first"><a href="http://www.zeit.de/kultur/literatur/index">Literatur</a></li>
+<li class="film"><a href="http://www.zeit.de/kultur/film/index">Film &amp; TV</a></li>
+<li class="musik"><a href="http://www.zeit.de/kultur/musik/index">Musik</a></li>
+<li class="kunst  last"><a href="http://www.zeit.de/kultur/kunst/index">Kunst</a></li>
+</ul>
+</li>
+<li class="wissen">
+<a href="http://www.zeit.de/wissen/index" class="groupleader">Wissen</a><ul>
+<li class="gesundheit first"><a href="http://www.zeit.de/wissen/gesundheit/index">Gesundheit</a></li>
+<li class="umwelt"><a href="http://www.zeit.de/wissen/umwelt/index">Umwelt</a></li>
+<li class="geschichte  last"><a href="http://www.zeit.de/wissen/geschichte/index">Geschichte</a></li>
+</ul>
+</li>
+<li class="digital">
+<a href="http://www.zeit.de/digital/index" class="groupleader">Digital</a><ul>
+<li class="internet first"><a href="http://www.zeit.de/digital/internet/index">Internet</a></li>
+<li class="datenschutz"><a href="http://www.zeit.de/digital/datenschutz/index">Datenschutz</a></li>
+<li class="mobil"><a href="http://www.zeit.de/digital/mobil/index">Mobil</a></li>
+<li class="games  last"><a href="http://www.zeit.de/digital/games/index">Games</a></li>
+</ul>
+</li>
+<li class="studium">
+<a href="http://www.zeit.de/studium/index" class="groupleader">Studium</a><ul>
+<li class="uni-leben first"><a href="http://www.zeit.de/studium/uni-leben/index">Uni-Leben</a></li>
+<li class="hochschule"><a href="http://www.zeit.de/studium/hochschule/index">Hochschule</a></li>
+<li class="rankings"><a href="http://www.zeit.de/studium/rankings/index">Rankings</a></li>
+<li class="studiengaenge  last"><a href="http://www.zeit.de/studium/studiengaenge">Studiengänge</a></li>
+</ul>
+</li>
+<li class="karriere">
+<a href="http://www.zeit.de/karriere/index" class="groupleader">Karriere</a><ul>
+<li class="bewerbung first"><a href="http://www.zeit.de/karriere/bewerbung/index">Bewerbung</a></li>
+<li class="beruf  last"><a href="http://www.zeit.de/karriere/beruf/index">Beruf</a></li>
+</ul>
+</li>
+<li class="lebensart">
+<a href="http://www.zeit.de/lebensart/index" class="groupleader">Lebensart</a><ul>
+<li class="mode first"><a href="http://www.zeit.de/lebensart/mode/index">Mode</a></li>
+<li class="essen-trinken"><a href="http://www.zeit.de/lebensart/essen-trinken/index">Essen &amp; Trinken</a></li>
+<li class="partnerschaft  last"><a href="http://www.zeit.de/lebensart/partnerschaft/index">Partnerschaft</a></li>
+</ul>
+</li>
+<li class="reisen"><a href="http://www.zeit.de/reisen/index" class="groupleader">Reisen</a></li>
+<li class="auto"><a href="http://www.zeit.de/auto/index" class="groupleader">Auto</a></li>
+<li class="sport  last"><a href="http://www.zeit.de/sport/index" class="groupleader">Sport</a></li>
+</ul>
+<div class="footersearch">
+<a href="http://www.zeit.de/index"> ZEIT ONLINE </a><form method="get" action="http://www.zeit.de/suche/index"><div>
+<label title="ZEIT ONLINE durchsuchen"><input class="itext" type="text" value="" name="q" onfocus="this.select();"></label><input type="submit" value="Suchen">
+</div></form>
+</div>
+<div class="footernav">
+<ul class="footernav1">
+<li class="first">ANGEBOTE:</li>
+<li><a href="http://www.zeitabo.de/?mcwt=2009_07_0002">Abo</a></li>
+<li><a href="http://shop.zeit.de?et=l6VVNm&amp;et_cid=42&amp;et_lid=175&amp;et_sub=Startseite_footer">Shop</a></li>
+<li><a href="http://www.christundwelt.de">Christ &amp; Welt</a></li>
+<li><a href="http://zeitreisen.zeit.de/">ZEIT Reisen</a></li>
+<li><a href="http://www.zeit.de/angebote/schule/index">ZEIT für die Schule</a></li>
+<li class="last"><a href="http://www.zeitverlag.de/veranstaltungen">ZEIT Veranstaltungen</a></li>
+</ul>
+<ul class="footernav2">
+<li>
+<li class="first">VERLAG:</li>
+<li><a href="http://inserieren.zeit.de/zeitads/index.jsf">Inserieren</a></li>
+<li><a href="http://www.zeitverlag.de/anzeigenkunden">Mediadaten</a></li>
+<li><a href="http://www.zeitverlag.de/presse">Presse</a></li>
+<li><a href="http://www.zeit-verlag.de/">Unternehmen</a></li>
+<li class="last"><a href="http://www.zeitverlag.de/presse/rechte-und-lizenzen">Rechte &amp; Lizenzen</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer2"><div class="center">
+<ul class="navigation fix">
+<li class="first"><a href="http://mobil.zeit.de/">Mobil</a></li>
+<li><a href="http://community.zeit.de/newsletter">Newsletter</a></li>
+<li><a href="http://www.zeit.de/hilfe/hilfe#rss">RSS</a></li>
+<li><a href="http://www.zeit.de/blogs/index">Blogs</a></li>
+<li><a href="http://www.zeit.de/foto/index">Foto</a></li>
+<li><a href="http://www.zeit.de/video">Video</a></li>
+<li><a href="http://www.zeit.de/leserartikel/index">Leserartikel</a></li>
+<li><a href="http://www.zeit.de/administratives/2010-03/netiquette">Netiquette</a></li>
+<li><a href="http://www.zeit.de/archiv">Print-Archiv</a></li>
+<li><a href="http://www.zeit.de/schlagworte/index/A/index">Schlagworte</a></li>
+<li><a href="#bildrechte">Bildrechte</a></li>
+<li><a href="http://www.zeit.de/hilfe/datenschutz">Datenschutz</a></li>
+<li><a href="http://www.iqm.de/Medien/Online/nutzungsbasierte_onlinewerbung.html" target="_blank">Cookies</a></li>
+<li><a href="http://www.zeit.de/administratives/agb-kommentare-artikel">AGB</a></li>
+<li><a href="http://www.zeit.de/impressum/index">Impressum</a></li>
+<li class="last"><a href="http://www.zeit.de/hilfe/hilfe">Hilfe / Kontakt</a></li>
+</ul>
+<div class="GvHGroup"><a href="#gvh">Weitere Angebote der Holtzbrinck-Gruppe</a></div>
+</div>
+</div>
+<div class="breadcrumbs"><div class="center"><ul>
+<li class="first"><strong>Sie befinden sich hier:</strong></li>
+<li itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ doc_url }}">Developer</a></li>
+<li class="last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ path }}">{{ file }}</a></li>
+</ul>
+</div>
+</div>
+</div>
+</body>
+</html>

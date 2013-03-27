@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block docTitle %}Quick Start Guide{% endblock %}
+{% block docBody %}
+
+<h2>Request an API key</h2>
+
+<p>Accessing our content requires an API key. To request one, simply
+  sign up with your full name and a valid Email address. A key will be
+  generated for you right here on this page. At the moment we offer free
+  API-Access with a limit of 10,000 requests per day.</p>
+
+<h3>Sign up</h3>
+
+<script type="text/javascript"
+	src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+<script type="text/javascript">
+	var RecaptchaOptions = {theme : 'custom', custom_theme_widget: 'signUpForm'};
+</script>
+
+<div id="signUpWrapper">
+	<table id="signUpForm">
+		<tr>
+			<td>
+				<div id="recaptcha_image"></div>
+			</td>
+			<td>
+				<input type="text" name="name" placeholder="Your name">
+				<input type="email" name="email" placeholder="Email address">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="recaptcha_response_field"
+					id="recaptcha_response_field" placeholder="Enter the words above">
+				<script type="text/javascript"
+					src="http://www.google.com/recaptcha/api/challenge?k={{ recaptcha }}">
+				</script>
+			</td>
+			<td>
+				<!--<input type="checkbox" name="agreement" required>
+				<div id="signUpAgreement">
+					I have read and accept the <a href="{{ doc_url }}/licence">
+					licence agreement</a>.
+				</div>-->
+				<span id="send">Request API key</span>
+			</td>
+		</tr>
+	</table>
+	<div id="signUpError">
+	</div>
+</div>
+
+<script>
+function readKey() {
+	var name = "api_key=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1, c.length);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+	}
+	return null;
+}
+
+function setKey(data) {
+	jQuery('#signUpWrapper').html('<code>api_key: ' + data['api_key'] + '</code>');
+	var date = new Date();
+    date.setTime(date.getTime()+(7*24*60*60*1000));
+	document.cookie = "api_key=" + data['api_key'] + "; expires="
+		+date.toGMTString() + "; path=/";
+}
+
+function flashError(errorMessage) {
+	jQuery('#signUpError').html('<code>' + errorMessage + '</code>');
+	jQuery('#signUpForm, #signUpError').toggle(100).delay(2000).toggle(100);
+}
+
+function getKey() {
+	jQuery.ajax({
+		type: 'POST',
+		url: '{{ api_url }}/client',
+		data: {
+            'name': jQuery('input[name="name"]').val(),
+            'email': jQuery('input[name="email"]').val(),
+            'challenge': Recaptcha.get_challenge(),
+            'response': Recaptcha.get_response()
+        },
+		timeout: 1000,
+		success: function(data) {
+			jQuery('#signUpWrapper').fadeOut('fast', function() {
+				setKey(data);
+				jQuery('#signUpWrapper').fadeIn('fast');
+			});
+		},
+		error: function(error) {
+			flashError('Sorry, something went wrong.');
+		}
+	});
+}
+
+function showRecaptcha(element) {
+		Recaptcha.create("6Lel8tsSAAAAAKObChJnz-ITIplR2fcibJrCsbQd", element, {
+	 	theme: "white",
+		callback: Recaptcha.focus_response_field});
+	}
+
+jQuery('document').ready(function() {
+	var key = readKey();
+	if (key) {
+		setKey({'api_key': key});
+	}
+});
+
+jQuery('#send').click(function() {
+	switch(true) {
+		case jQuery('input[name="name"]').val().length == 0:
+  			flashError('Please fill in your full name.');
+  			break;
+		case jQuery('input[name="email"]').val().length == 0:
+			flashError('Please fill in a valid email address.');
+			break;
+		case jQuery('input[name="recaptcha_response_field"]').val().length == 0:
+			flashError('Please enter the captcha.');
+			break;
+		/*case !jQuery('input[name="agreement"]').attr('checked'):
+			flashError('Please accept our licence agreement.');
+			break;*/
+		default:
+			getKey();
+	}
+});
+</script>
+
+<hr/>
+<h2>Authorize requests</h2>
+
+<p>
+	All requests to our API must be authorized, so we know who plays with our
+	data. To keep URLs simple and clean, the key should be sent as an
+	X-Authorization header attached to your HTTP request.
+</p>
+
+<h3>Example</h3>
+<pre><code>GET /{endpoint} HTTP/1.1
+Host: {{ api_url }}
+X-Authorization: {api_key}
+</code></pre>
+
+<p>
+	The key may also be sent as a query parameter, but a header is preferred.
+</p>
+
+<h3>Example</h3>
+<pre><code>GET /{endpoint}?api_key={api_key} HTTP/1.1
+Host: {{ api_url }}
+</code></pre>
+
+<hr/>
+<h2>Available formats</h2>
+<p>
+	The supported content types for now are <a href="http://www.json.org/"
+	target="_blank">JSON</a> and <a href="http://json-p.org/" target="_blank">
+	JSONP</a>, simple as that. The default is JSON.<br/>To get JSONP, a
+	callback parameter specifying the function's name is required.
+</p>
+
+<h3>Example</h3>
+<pre><code>GET /{endpoint}?callback=myCallbackName HTTP/1.1
+Response: myCallbackName({"result":"data"});</code></pre>
+
+<hr/>
+<h2>Error handling</h2>
+<p>If there was something wrong with your request or, if for some reason, we
+	dropped the ball, you will receive an appropriate HTTP status code. The
+	body will contain a JSON-encoded description of what might have been the
+	problem.
+</p>
+
+<h3>Example</h3>
+<pre><code>HTTP/1.0 401 UNAUTHORIZED
+Content: {"description": "The provided API key seems to be invalid."}
+</code></pre>
+
+<hr/>
+
+<h2>Start exploring</h2>
+<p>
+	Now, that you have learned the basics, head over to our <a
+	href="{{ doc_url }}/explorer">API Explorer</a> or digg into the
+	<a href="{{ doc_url }}/docs">documentation</a>.
+</p>
+
+{% endblock %}

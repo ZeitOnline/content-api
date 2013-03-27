@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block docTitle %}Content{% endblock %}
+{% block docBody %}
+
+<h2 id="search">Search for content</h2>
+
+<p>
+    This endpoint exposes an unfiltered search for articles. You can set search
+    queries, paginate, sort and partially select the fields, that should be
+    returned. Articles, that match your query, are returned in the <code>
+    matches</code> array with a reduced set of meta data. The full set of data
+    is only available at <code>/content/{id}</code>.
+</p>
+
+<h3>Endpoint</h3>
+<pre><code>{{ api_url }}/content</code></pre>
+
+<h3>Parameter</h3>
+<code>
+    <table>
+        <tr>
+           <td>q<span class="default">*:*</span></td>
+            <td>the main search query</td>
+        </tr>
+        <tr>
+            <td>fields<span class="default">*</span></td>
+            <td>partially select output fields</td>
+        </tr>
+        <tr>
+            <td>limit<span class="default">10</span></td>
+            <td>limit the amount of matches to return</td>
+        </tr>
+        <tr>
+            <td>offset<span class="default">0</span></td>
+            <td>offset for the list of matches</td>
+        </tr>
+    </table>
+</code>
+
+<h2>Example</h2>
+
+<h3>Request</h3>
+<pre><code>GET /content?q=dolore&limit=1 HTTP/1.1
+Host: {{ api_url }}
+X-Authorization: abcdefg1234xyz56789
+</code></pre>
+
+<h3>Response</h3>
+<pre><code>{
+  "matches": [
+    {
+        "subtitle": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+            sed diam nonumy eirmod tempor invidunt.",
+        "uuid": "1111122299xxcc99aa", 
+        "title": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
+        "href": "http://www.zeit.de/lorem/ipsum/2012-12/Lorem-ipsum-dolor-sit",
+        "release_date": "2011-12-01T14:40:00.000Z", 
+        "uri": "{{ api_url }}/content/1111122299xxcc99aa",
+        "snippet": "tempor invidunt ut labore et <em>dolore</em> magna aliquyam
+            erat, sed diam voluptua"
+        "supertitle": "Lorem Ipsum", 
+        "teaser_title": "Lorem ipsum dolor sit amet, consetetur sadipscing.",
+        "teaser_text": "Stet clita kasd gubergren, no sea takimata sanctus est
+            Lorem ipsum dolor sit amet."
+    }
+],
+  "found": 148,
+  "limit": 1,
+  "offset": 0
+}</code></pre>
+
+<hr/>
+
+<h2 id="by-id">Get content by ID</h2>
+
+<p>
+    Requesting a content object by its ID will get you all available data for
+    that article. Partial field selection is available, if not all fields are
+    of interest.
+</p>
+
+<h3>Endpoint</h3>
+<pre><code>{{ api_url }}/content/{id}</code></pre>
+
+<h2>Example</h2>
+
+<h3>Request</h3>
+<pre><code>GET /content/1111122299xxcc99aa HTTP/1.1
+Host: {{ api_url }}
+X-Authorization: abcdefg1234xyz56789
+</code></pre>
+
+<h3>Response</h3>
+<pre><code>{
+    "title": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
+    "release_date": "2011-12-01T14:40:00.000Z", 
+    "uri": "{{ api_url }}/content/1111122299xxcc99aa",
+    "supertitle": "Lorem Ipsum", 
+    "href": "http://www.zeit.de/lorem/ipsum/2012-12/Lorem-ipsum-dolor-sit-que",
+    "teaser_text": "Stet clita kasd gubergren, no sea takimata sanctus est
+        Lorem ipsum dolor sit amet."
+    "teaser_title": "Lorem ipsum dolor sit amet, consetetur sadipscing.",
+    "creators": [
+        {
+            "uri": "{{ api_url }}/author/James-Mustermann",
+            "rel": "author",
+            "name": "James Mustermann"
+        }
+    ],
+    "relations": [
+        {
+            "uri": "{{ api_url }}/content/55555ccc333aaawww",
+            "rel": "related",
+            "name": "Eirmod tempor invidunt ut labore"
+        },
+        {
+            "uri": "{{ api_url }}/content/333322ssssQQQrrrr",
+            "rel": "related",
+            "name": "No sea takimata sanctus est"
+        }
+    ],
+    "keywords": [
+        {
+            "uri": "{{ api_url }}/keyword/lorem",
+            "rel": "location",
+            "name": "Lorem"
+        },
+        {
+            "uri": "{{ api_url }}/keyword/ipsum-set",
+            "rel": "subject",
+            "name": "Ipsum Set"
+        }
+    ],
+    "categories": [
+        {
+            "uri": "{{ api_url }}/department/lorem",
+            "rel": "department",
+            "name": "Lorem"
+        },
+        {
+            "uri": "{{ api_url }}/product/dolores",
+            "rel": "product",
+            "name": "Dolores"
+        },
+        {
+            "uri": "{{ api_url }}/department/ipsum",
+            "rel": "sub_department",
+            "name": "Ipsum"
+        }
+    ]
+}</code></pre>
+
+{% endblock %}

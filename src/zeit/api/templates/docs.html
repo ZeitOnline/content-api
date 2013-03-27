@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% block docTitle %}Documentation{% endblock %}
+{% block docBody %}
+
+<h2>Endpoints</h2>
+
+<p>
+	The API is structured into several endpoints that provide specific
+	functionalities:
+</p>
+
+<table>
+<tr>
+	<td>
+		<code>/author</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/author#search">search all authors</a>
+	</td>
+	<td>
+		<code>/author/{id}</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/author#by-id">content by this author</a>
+	</td>
+</tr>
+<tr>
+	<td>
+		<code>/client</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/client#search">observe API usage</a>
+	</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>
+		<code>/content</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/content#search">search for content</a>
+	</td>
+	<td>
+		<code>/content/{id}</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/content#by-id">get content by ID</a>
+	</td>
+</tr>
+<tr>
+	<td>
+		<code>/department</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/department#search">search all departments</a>
+	</td>
+	<td>
+		<code>/department/{id}</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/department#by-id">content from this department</a>
+	</td>
+</tr>
+<tr>
+	<td>
+		<code>/keyword</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/keyword#search">search all keywords</a>
+	</td>
+	<td>
+		<code>/keyword/{id}</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/keyword#by-id">content about this keyword</a>
+	</td>
+</tr>
+<tr>
+	<td>
+		<code>/product</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/product#search">search all products</a>
+	</td>
+	<td>
+		<code>/product/{id}</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/product#by-id">content from this product</a>
+	</td>
+</tr>
+<tr>
+	<td>
+		<code>/series</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/series#search">search all series</a>
+	</td>
+	<td>
+		<code>/series/{id}</code>
+	</td>
+	<td>
+		<a href="{{ doc_url }}/docs/series#by-id">content in this series</a>
+	</td>
+</tr>
+</table>
+
+<hr/>
+
+<h2>Search Syntax</h2>
+
+<p>
+	The <code>q</code> parameter supports simple Solr query syntax for the
+	<code>/content</code> endpoint and all <code>/{ep}/{id}</code> endpoints.
+	Here are a few basics to get you started. For more details check out the
+	<a href="http://wiki.apache.org/solr/SolrQuerySyntax" target="_blank">
+	Apache Solr documentation</a>.
+</p>
+<p>
+	<b>Full text search:</b> You can search the entire article text and all
+	meta data simply by setting the query parameter to your search phrase.
+	<code>John+Fitzgerald+Kennedy</code> will search for multiple tokens and
+	<code>"John%20Fitzgerald%20Kennedy"</code> will search for the entire
+	string.
+</p>
+<p>
+	<b>Field queries:</b> All fields of an article can be queried individually.
+	For example, to get articles that have the word "Kennedy" in their headline,
+	you would search for <code>title:"Kennedy"</code>.
+</p>
+<p>
+	<b>Boolean operators:</b> To form a boolean expression of multiple queries,
+	connect them with<br/>an <code>AND</code> or an <code>OR</code>. So if you
+	want to search the subtitle for "Kennedy" as well, you can modify the query
+	to<br/><code>title:"Kennedy" AND subtitle:"Kennedy"</code>.
+</p>
+<p>
+	<b>Range queries:</b> You can specify a date range for your query using
+	full ISO 8601 date syntax.<br/>Getting all Kennedy related articles from
+	the	60s would work like this:<br/>
+	<code>"Kennedy" AND release_date:[1960-01-01T00:00:00Z TO
+	1969-12-31T23:59:59.999Z]</code>.
+</p>
+<p>
+	<b>Non-content search:</b> All other endpoints currently only support
+	simple search phrases with asterisk wildcards. So, a search for Kennedy
+	related keywords goes like this: <code>/keyword?q=*Kennedy</code>
+</p>
+
+<hr/>
+
+<h2>Pagination</h2>
+
+<p>
+	Search results are limited to 10 matches by default. You can increase this
+	value with the <code>limit</code> parameter. To iterate over the resultset,
+	repeat your request with the <code>offset</code> parameter set to multiples
+	of the limit.
+</p>
+
+<hr/>
+
+<h2>Partial Selection</h2>
+
+<p>
+	By default, the API returns all available fields for your request. To speed
+	things up, you can specify which fields the server should return using the
+	<code>fields</code> paramter. If the request returns an array of matches,
+	this setting only affects entries within that array. So, for example the
+	field <code>found</code> cannot be deselected, as it always resides outside
+	of the matches array.
+</p>
+
+<hr/>
+
+<h2>Sorting</h2>
+
+<p>
+	Search results, namely those of the <code>/content</code> endpoint, can be
+	sorted using the <code>sort</code> parameter. Any of the returned fields are
+	sortable. Direction keywords are <code>asc</code> and <code>desc</code> for
+	an ascending or descending sort order respectively. Multiple sort orders are
+	accepted as a comma-separated list, for example: <code>sort=release_date
+	asc, uuid desc</code>.
+</p>
+
+<hr/>
+
+<h2>Facetting</h2>
+
+<p>
+	The content endpoint also provides a faceting interface. You can display
+	facets for specific fields and for date ranges. The
+	<code>facet_field</code> parameter is used to get a frequency distribution
+	for the different values of a field. The <code>facet_date</code> parameter
+	returns counts for the distribution over a specified date range. The
+	facetting results are limited by your search query, but not by pagination
+	parameters.
+</p>
+<br/>
+<table>
+<tr>
+	<td><b>Parameter</b></td>
+	<td><b>Possible values</b></td>
+</tr>
+<tr>
+    <td><code>facet_field</code></td>
+    <td><code>keyword, author, series, department, product</code> or any combination</td>
+</tr>
+<tr>
+	<td><code>facet_date</code></td>
+	<td><code>1day, 7day, 1month, 1year, 10year</code> or any numerical variation</td>
+</tr>
+</table>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block docTitle %}API Explorer{% endblock %}
+{% block docBody %}
+
+<p>
+	You can browse the API with this interactive explorer. Select an endpoint
+	to see its available parameters and their default values. If you have
+	<a href="{{ doc_url }}/quickstart">requested an API key</a>, it is
+	inserted automatically in the form below.
+</p>
+
+<h3>Request</h3>
+<pre class="explorerWrapper">
+<code>GET <select id="explorerEndpoint"></select><span id="explorerEndpointSpan">/<input placeholder="id" id="explorerEndpointId" size="40" /></span>
+<br/><div id="explorerParamWrapper"></div>Host: {{ api_url }}
+X-Authorization: <input placeholder="Insert your API key here" id="explorerXAuth" size="56" />
+</code></pre>
+<div class="alignCenter"><span id="send">Send request</span></div>
+<h3>Response</h3>
+<pre class="explorerWrapper">
+<code id="explorerStatus"></code><code id="explorerResponse"></code>
+</pre>
+
+<script type="text/javascript">
+
+function readKey() {
+	var name = "api_key=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1, c.length);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+	}
+	return null;
+}
+
+function initParamFields() {
+	var endpoints;
+	var success = function(data) {
+			endpoints = data;
+		};
+
+	jQuery.ajax({
+		dataType: "json",
+		url: '{{ api_url }}',
+		async: false,
+		success: success
+	});
+
+
+	jQuery('#explorerParamWrapper').empty();
+	if (jQuery('#explorerEndpoint:empty').length == 1) {
+		initIdField(endpoints);
+	}
+	var id = (jQuery('#explorerEndpointId').val() == '') ? '' : '/{id}';
+	var params = endpoints[jQuery('#explorerEndpoint').val() + id].params;
+	for (p in params) {
+		var input = jQuery('<span>').text(p)
+			.add(jQuery('<input>').addClass(p).attr('placeholder', params[p]))
+			.add(jQuery('<br/>'));
+		jQuery('#explorerParamWrapper').append(input);
+	}
+	if (jQuery('#explorerEndpoint').val() == 'client') {
+		jQuery('#explorerEndpointSpan').hide();
+	} else {
+		jQuery('#explorerEndpointSpan').show();
+	}
+}
+function initIdField(endpoints) {
+	for (endpoint in endpoints) {
+		if (endpoint.search('/') > 0) { continue }
+		var option = '<option value="'+endpoint+'">/'+endpoint+'</option>';
+		jQuery('#explorerEndpoint').append(option);
+	}
+}
+
+function rewriteApiLinks(data) {
+	if (typeof data == 'object') {
+		jQuery.each(data, function(key, val) {
+			if (key != 'facets') {
+				rewriteApiLinks(val);
+			}
+			switch (key) {
+				case 'uri':
+					path = val.replace('{{ api_url }}', '{{ doc_url }}/explorer/#!');
+					data[key] = '<a href=' + path + ' class=explorerUriLink>'
+								+ val + '</a>';
+					break;
+				case 'href':
+					data[key] = '<a target=_blank class=explorerZonLink href='
+								+ val + '>' + val + '</a>';
+					break;
+			}
+		});
+	}
+}
+
+function configureEndpoint() {
+	var path = jQuery(location).attr('hash').split('/');
+	switch (true) {
+		case path.length > 1:
+			jQuery('#explorerEndpoint').val(path[1]);
+			initParamFields();
+		case path.length > 2:
+			jQuery('#explorerEndpointId').val(path[2]);
+	}
+}
+
+function sendRequest() {
+	var params = {};
+	jQuery(location).attr('hash', '!');
+	jQuery('#explorerParamWrapper input').each(function() {
+		if (jQuery(this).val()) {
+			params[jQuery(this).attr('class')] = jQuery(this).val();
+		}
+	});
+	var explorerEndpointId = '';
+	if (jQuery('#explorerEndpointId').val() != '') {
+		explorerEndpointId = '/' + jQuery('#explorerEndpointId').val();
+	}
+	jQuery.ajax({
+		type: 'GET',
+		url: '{{ api_url }}/' + jQuery('#explorerEndpoint').val() + explorerEndpointId,
+		data: params,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('X-Authorization', jQuery('#explorerXAuth').val());
+			jQuery('#explorerResponse, #explorerStatus').fadeOut(50);
+		},
+		success: function(data) {
+			rewriteApiLinks(data);
+			jQuery('#explorerResponse').html(JSON.stringify(data, null, ' '));
+		},
+		error: function(xhr) {
+			jQuery('#explorerResponse').html(xhr.responseText);
+		},
+		complete: function(xhr, status) {
+			jQuery('#explorerStatus').html('Status Code: ' + xhr.status + ' '
+				+ xhr.statusText + '<hr/>');
+			jQuery('#explorerResponse, #explorerStatus').fadeIn(250);
+		}
+	});
+}
+
+jQuery(window).bind('hashchange', function() {
+	configureEndpoint();
+});
+
+jQuery('#explorerEndpoint').change(function() {
+	initParamFields();
+});
+
+jQuery('#explorerEndpointId').change(function() {
+	initParamFields();
+});
+
+jQuery('document').ready(function() {
+	jQuery('#explorerXAuth').attr('value', readKey());
+	initParamFields();
+});
+
+jQuery('#send').click(sendRequest);
+
+</script>
+
+{% endblock %}
