@@ -15,42 +15,42 @@ import blueprints, flask, settings
 
 
 def make_app(blueprint, config):
-	"""Configure a flask instance with a given blueprint and configuration."""
-	app = flask.Flask(import_name = __name__)
-	app.register_blueprint(blueprint)
-	app.url_map.strict_slashes = False
-	app.config.from_object(config)
-	return app
+    """Configure a flask instance with a given blueprint and configuration."""
+    app = flask.Flask(import_name = __name__)
+    app.register_blueprint(blueprint)
+    app.url_map.strict_slashes = False
+    app.config.from_object(config)
+    return app
 
 def run_local_api():
-	"""Run an api server instance on a local development server."""
-	cfg = settings.LocalConfig()
-	app = make_app(blueprints.api_server, settings.LocalConfig)
-	app.run(host = cfg.SERVERNAME, port = cfg.API_PORT, debug = True)
+    """Run an api server instance on a local development server."""
+    cfg = settings.LocalConfig()
+    app = make_app(blueprints.api_server, settings.LocalConfig)
+    app.run(host = cfg.SERVERNAME, port = cfg.API_PORT, debug = True)
 
 def run_local_doc():
-	"""Runs a developer portal instance on a local development server."""
-	cfg = settings.LocalConfig()
-	app = make_app(blueprints.developer_portal, settings.LocalConfig)
-	app.run(host = cfg.SERVERNAME, port = cfg.DOC_PORT, debug = True)
+    """Runs a developer portal instance on a local development server."""
+    cfg = settings.LocalConfig()
+    app = make_app(blueprints.developer_portal, settings.LocalConfig)
+    app.run(host = cfg.SERVERNAME, port = cfg.DOC_PORT, debug = True)
 
 def test_client_factory():
-	"""Return a client instance for automated testing."""
-	app = make_app(blueprints.api_server, settings.TestingConfig)
-	return app.test_client()
+    """Return a client instance for automated testing."""
+    app = make_app(blueprints.api_server, settings.TestingConfig)
+    return app.test_client()
 
 def api_factory(global_config, **local_conf):
-	"""Return an api server instance configured for production."""
-	return make_app(blueprints.api_server, settings.ProductionConfig)
+    """Return an api server instance configured for production."""
+    return make_app(blueprints.api_server, settings.ProductionConfig)
 
 def doc_factory(global_config, **local_conf):
-	"""Return a developer portal instance configured for production."""
-	return make_app(blueprints.developer_portal, settings.ProductionConfig)
+    """Return a developer portal instance configured for production."""
+    return make_app(blueprints.developer_portal, settings.ProductionConfig)
 
 def api_dev_factory(global_config, **local_conf):
-	"""Return an api server instance configured for development."""
-	return make_app(blueprints.api_server, settings.DevelopmentConfig)
+    """Return an api server instance configured for development."""
+    return make_app(blueprints.api_server, settings.DevelopmentConfig)
 
 def doc_dev_factory(global_config, **local_conf):
-	"""Return a developer portal instance configured for development."""
-	return make_app(blueprints.developer_portal, settings.DevelopmentConfig)
+    """Return a developer portal instance configured for development."""
+    return make_app(blueprints.developer_portal, settings.DevelopmentConfig)

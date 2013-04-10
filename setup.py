@@ -12,14 +12,14 @@ setup(
     namespace_packages = ['zeit',],
     include_package_data = True,
     install_requires = [
-	'setuptools',
-	'flask',
+    'setuptools',
+    'flask',
     'lxml'
-	],
+    ],
     zip_safe = False,
     entry_points = """
-	[console_scripts]
-	api = zeit.api.application:run_local_api
+    [console_scripts]
+    api = zeit.api.application:run_local_api
     doc = zeit.api.application:run_local_doc
     """,
     )
