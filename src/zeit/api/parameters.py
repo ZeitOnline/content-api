@@ -38,14 +38,14 @@ class Param(object):
         try:
             self.valid(value)
             self._value = value
-        except AssertionError, e:
+        except AssertionError:
             raise exception.JSONBadRequest()
 
     def __repr__(self):
         return str(self.value)
 
     def valid(self, value):
-        assert value != None
+        assert value is None
 
 
 class StrParam(Param):
@@ -83,7 +83,7 @@ class SqlQParam(StrParam):
         try:
             self.valid(value)
             self._value = value.replace('*', '%')
-        except AssertionError, e:
+        except AssertionError:
             raise exception.JSONBadRequest()
 
 
@@ -106,7 +106,7 @@ class FacetFieldParam(StrParam):
             'keyword',
             'author',
             'series'
-            ]
+        ]
         assert value in whitelist
 
 
@@ -133,7 +133,7 @@ class FacetDateParam(StrParam):
         try:
             self.valid(value)
             self._value = util.ensure_prefix(value, '+').upper()
-        except AssertionError, e:
+        except AssertionError:
             raise exception.JSONBadRequest()
 
 
@@ -227,5 +227,5 @@ class FieldsParam(CsvParam):
         try:
             self.valid(value)
             self._value = value if '*' not in value else self.default
-        except AssertionError, e:
+        except AssertionError:
             raise exception.JSONBadRequest()

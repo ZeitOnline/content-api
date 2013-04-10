@@ -27,6 +27,7 @@ def __update_product(product):
     query = 'REPLACE INTO product VALUES (?, ?, ?, ?);'
     g.db.execute(query, (href, product_id, uri, value))
 
+
 def __update_series(series):
     """Update the given series entity."""
     series_id = save_xpath(series, './@url')
@@ -36,6 +37,7 @@ def __update_series(series):
     query = 'REPLACE INTO series VALUES (?, ?, ?, ?, ?);'
     href = 'http://www.zeit.de/serie/%s' % series_id
     g.db.execute(query, (href, series_id, name, uri, value))
+
 
 def __update_keyword(keyword, ranks, types):
     """Update the given keyword entity."""
@@ -47,9 +49,10 @@ def __update_keyword(keyword, ranks, types):
     kw_type = 'subject' if kw_type in ['free', 'topic'] else kw_type.lower()
     score = (ranks.index(int(save_xpath(keyword, './@freq'))) + 1)
     score = int(100.0 / len(ranks) * score)
-    href = 'http://www.zeit.de/schlagworte/%s/%s/index' % (types[kw_type],kw_id)
+    href = 'http://www.zeit.de/schlagworte/%s/%s/index' % (types[kw_type], kw_id)
     query = 'REPLACE INTO keyword VALUES (?, ?, ?, ?, ?, ?, ?);'
     g.db.execute(query, (href, kw_id, lexical, score, kw_type, uri, value))
+
 
 def __update_department(department):
     """Update the given department entity."""
@@ -58,12 +61,13 @@ def __update_department(department):
         return
     uri = '%s/department/%s' % (current_app.config['API_URL'], dept_id)
     value = save_xpath(department, 'text()')
-    href = save_xpath(department, './@href')[19:].split('/', 1)[0];
+    href = save_xpath(department, './@href')[19:].split('/', 1)[0]
     parent = href if href != dept_id else ''
     path = parent + '/' + dept_id if parent else dept_id
     href = 'http://www.zeit.de/%s/index' % path
     query = 'REPLACE INTO department VALUES (?, ?, ?, ?, ?);'
     g.db.execute(query, (href, dept_id, parent, uri, value))
+
 
 def __update_author(author):
     """Update the given author entity."""
@@ -76,6 +80,7 @@ def __update_author(author):
     href = href if urllib.urlopen(iri_to_uri(href)).getcode() == 200 else ''
     query = 'REPLACE INTO author VALUES (?, ?, ?, ?, ?);'
     g.db.execute(query, (href, author_id, 'author', uri, value))
+
 
 def update():
     """Update metadata of all categories and write changes to database."""

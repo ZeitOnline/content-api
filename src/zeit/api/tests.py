@@ -21,17 +21,17 @@ class ClientTestCase(unittest.TestCase):
     def setUp(self):
         self.client = application.test_client_factory()
         data = dict(
-            name = 'Any Name',
-            email = 'mail@provider.tld',
-            challenge = '0123456789',
-            response = 'abcdefghij'
-            )
-        resp = self.client.post('/client', data = data)
+            name='Any Name',
+            email='mail@provider.tld',
+            challenge='0123456789',
+            response='abcdefghij'
+        )
+        resp = self.client.post('/client', data=data)
         self.parsed = json.loads(resp.data)
 
     def test_signup(self):
         """Client signup successful."""
-        self.assertTrue(self.parsed.has_key('api_key'))
+        self.assertTrue('api_key' in self.parsed)
 
     def test_unauthorized(self):
         """Unauthorized access blocked."""
@@ -40,15 +40,15 @@ class ClientTestCase(unittest.TestCase):
 
     def test_api_key_parameter(self):
         """Authorization via URL parameter."""
-        query_string = dict(api_key = self.parsed['api_key'])
-        resp = self.client.get('/client', query_string = query_string)
+        query_string = dict(api_key=self.parsed['api_key'])
+        resp = self.client.get('/client', query_string=query_string)
         self.assertEqual(resp.status_code, 200)
 
     def test_x_authorization_header(self):
         """Authorization via HTTP header."""
         headers = werkzeug.datastructures.Headers()
         headers.add('X-Authorization', self.parsed['api_key'])
-        resp = self.client.get('/client', headers = headers)
+        resp = self.client.get('/client', headers=headers)
         self.assertEqual(resp.status_code, 200)
 
 
@@ -56,14 +56,14 @@ class QueryTestCase(unittest.TestCase):
 
     def setUp(self):
         self.client = application.test_client_factory()
-        data = dict(name = 'Some Name', email = 'mail@provider.tld')
-        resp = self.client.post('/client', data = data)
+        data = dict(name='Some Name', email='mail@provider.tld')
+        resp = self.client.post('/client', data=data)
         self.headers = werkzeug.datastructures.Headers()
         self.headers.add('X-Authorization', json.loads(resp.data)['api_key'])
 
-    def __get_json(self, url, data = {}):
+    def __get_json(self, url, data={}):
         print 'Checking ' + url + ' with ' + str(data)
-        resp = self.client.get(url, headers = self.headers)
+        resp = self.client.get(url, headers=self.headers)
         self.assertEqual(resp.status_code, 200)
         return json.loads(resp.data)
 
@@ -93,11 +93,11 @@ class ParameterTestCase(unittest.TestCase):
 
     def setUp(self):
         self.client = application.test_client_factory()
-        data = dict(name = 'Some Name', email = 'mail@provider.tld')
-        resp = self.client.post('/client', data = data)
+        data = dict(name='Some Name', email='mail@provider.tld')
+        resp = self.client.post('/client', data=data)
         self.headers = werkzeug.datastructures.Headers()
         self.headers.add('X-Authorization', json.loads(resp.data)['api_key'])
-        resp = self.client.get('/', headers = self.headers)
+        resp = self.client.get('/', headers=self.headers)
         self.endpoints = json.loads(resp.data)
 
     def test_callback_parameter(self):
@@ -108,13 +108,13 @@ class ParameterTestCase(unittest.TestCase):
             rnd = ''.join(random.choice('abcdefghij') for x in range(5))
             json_resp = self.client.get(
                 '/' + ep,
-                query_string = dict(limit = 1),
-                headers = self.headers
+                query_string=dict(limit=1),
+                headers=self.headers
             )
             jsonp_resp = self.client.get(
                 '/' + ep,
-                query_string = dict(callback = rnd, limit = 1),
-                headers = self.headers
+                query_string=dict(callback=rnd, limit=1),
+                headers=self.headers
             )
             expected = rnd + '(' + json_resp.data + ');'
             self.assertEqual(expected, jsonp_resp.data)
@@ -127,9 +127,9 @@ class ParameterTestCase(unittest.TestCase):
             for entry, result in [(-1, 0), (0, 0), (1, 1), (1025, 0)]:
                 resp = self.client.get(
                     '/' + ep,
-                    query_string = dict(limit = entry),
-                    headers = self.headers
-                    )
+                    query_string=dict(limit=entry),
+                    headers=self.headers
+                )
                 matches = json.loads(resp.data).get('matches', [])
                 self.assertEqual(len(matches), result)
 
@@ -140,17 +140,17 @@ class ParameterTestCase(unittest.TestCase):
                 continue
             resp = self.client.get(
                 '/' + ep,
-                query_string = dict(limit = 0),
-                headers = self.headers
-                )
+                query_string=dict(limit=0),
+                headers=self.headers
+            )
             maximum = json.loads(resp.data)['found']
 
             for entry, code in [(-1, 400), (0, 200), (maximum, 200)]:
                 resp = self.client.get(
                     '/' + ep,
-                    query_string = dict(offset = entry),
-                    headers = self.headers
-                    )
+                    query_string=dict(offset=entry),
+                    headers=self.headers
+                )
                 self.assertEqual(resp.status_code, code)
 
     def test_fields_parameter(self):
@@ -163,14 +163,14 @@ class ParameterTestCase(unittest.TestCase):
             for n in range(1, len(fields)):
                 for perm_fields in [fields[:n]]:
                     query_string = dict(
-                        fields = ','.join(perm_fields),
-                        limit = 1
-                        )
+                        fields=','.join(perm_fields),
+                        limit=1
+                    )
                     resp = self.client.get(
                         '/' + ep,
-                        query_string = query_string,
-                        headers = self.headers
-                        )
+                        query_string=query_string,
+                        headers=self.headers
+                    )
                     print 'Checking /' + ep + ' with ' + str(query_string)
                     parsed_fields = json.loads(resp.data)['matches'][0].keys()
                     sd = set(perm_fields).symmetric_difference(set(parsed_fields))

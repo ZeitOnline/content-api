@@ -20,6 +20,7 @@ from flask import request
 class JSONTooManyRequests(JSONHTTPException):
     code = 429
     description = 'You have reached your request quota.'
+
     @property
     def name(self):
         return 'Too Many Requests'
@@ -54,49 +55,57 @@ class JSONInternalServerError(JSONHTTPException, InternalServerError):
 class JSONServiceUnavailable(JSONHTTPException, ServiceUnavailable):
     description = 'The service is currently unavailable.'
 
-def too_many_requests(error = None):
+
+def too_many_requests(error=None):
     excp = JSONTooManyRequests()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def unauthorized(error = None):
+
+def unauthorized(error=None):
     excp = JSONUnauthorized()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def endpoint_not_found(error = None):
+
+def endpoint_not_found(error=None):
     excp = JSONEndpointNotFound()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def resource_not_found(error = None):
+
+def resource_not_found(error=None):
     excp = JSONResourceNotFound()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def method_not_allowed(error = None):
+
+def method_not_allowed(error=None):
     excp = JSONMethodNotAllowed()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def bad_request(error = None):
+
+def bad_request(error=None):
     excp = JSONBadRequest()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def internal_server_error(error = None):
+
+def internal_server_error(error=None):
     excp = JSONInternalServerError()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message
     return excp
 
-def service_unavailable(error = None):
+
+def service_unavailable(error=None):
     excp = JSONServiceUnavailable()
     message = '%d: %s' % (excp.code, error or excp.description)
     print >> request.environ['wsgi.errors'], message

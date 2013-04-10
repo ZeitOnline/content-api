@@ -94,11 +94,11 @@ class SearchQuery(Query):
 
     def fetch(self):
         return dict(
-            matches = list(self._matches()),
-            found = self._fetch_count(),
-            limit = int(self.limit.value),
-            offset = int(self.offset.value)
-            )
+            matches=list(self._matches()),
+            found=self._fetch_count(),
+            limit=int(self.limit.value),
+            offset=int(self.offset.value)
+        )
 
 
 class AuthorSearchQuery(SearchQuery):
@@ -106,8 +106,8 @@ class AuthorSearchQuery(SearchQuery):
 
     def __init__(self, **kwargs):
         self.fields = parameters.FieldsParam(
-            default = 'href,id,type,uri,value'
-            )
+            default='href,id,type,uri,value'
+        )
         super(AuthorSearchQuery, self).__init__('author', **kwargs)
 
 
@@ -116,8 +116,8 @@ class DepartmentSearchQuery(SearchQuery):
 
     def __init__(self, **kwargs):
         self.fields = parameters.FieldsParam(
-            default = 'href,id,parent,uri,value'
-            )
+            default='href,id,parent,uri,value'
+        )
         super(DepartmentSearchQuery, self).__init__('department', **kwargs)
 
 
@@ -126,8 +126,8 @@ class KeywordSearchQuery(SearchQuery):
 
     def __init__(self, **kwargs):
         self.fields = parameters.FieldsParam(
-            default = 'href,id,lexical,score,type,uri,value'
-            )
+            default='href,id,lexical,score,type,uri,value'
+        )
         super(KeywordSearchQuery, self).__init__('keyword', **kwargs)
 
 
@@ -136,8 +136,8 @@ class ProductSearchQuery(SearchQuery):
 
     def __init__(self, **kwargs):
         self.fields = parameters.FieldsParam(
-            default = 'href,id,uri,value'
-            )
+            default='href,id,uri,value'
+        )
         super(ProductSearchQuery, self).__init__('product', **kwargs)
 
 
@@ -146,8 +146,8 @@ class SeriesSearchQuery(SearchQuery):
 
     def __init__(self, **kwargs):
         self.fields = parameters.FieldsParam(
-            default = 'href,id,name,uri,value'
-            )
+            default='href,id,name,uri,value'
+        )
         super(SeriesSearchQuery, self).__init__('series', **kwargs)
 
 
@@ -159,20 +159,20 @@ class ContentSearchQuery(Query):
 
     def __init__(self, **kwargs):
         self.q = parameters.StrParam(
-            key = 'q',
-            origin = 'q',
-            default = '*:*'
-            )
+            key='q',
+            origin='q',
+            default='*:*'
+        )
         self.sort = parameters.StrParam(
-            key = 'sort',
-            origin = 'sort',
-            default = 'release_date desc'
-            )
+            key='sort',
+            origin='sort',
+            default='release_date desc'
+        )
         self.fields = parameters.FieldsParam(
-            default = ('subtitle,uuid,title,href,release_date,'
+            default=('subtitle,uuid,title,href,release_date,'
                 'uri,snippet,supertitle,teaser_title,teaser_text'),
-            enforce = 'uuid'
-            )
+            enforce='uuid'
+        )
         self.facet_date = parameters.FacetDateParam()
         self.facet_field = parameters.FacetFieldParam()
         self.limit = parameters.LimitParam()
@@ -180,15 +180,15 @@ class ContentSearchQuery(Query):
         super(ContentSearchQuery, self).__init__(**kwargs)
         if self.facet_field.value != '' or self.facet_date.value != '':
             self.facet = parameters.StrParam(
-                key = 'facet',
-                origin = 'facet',
-                default = 'true'
-                )
+                key='facet',
+                origin='facet',
+                default='true'
+            )
         if self.facet_date.value != '':
             self.facet_date_field = parameters.StrParam(
-                origin = 'facet.date',
-                default = 'release_date'
-                )
+                origin='facet.date',
+                default='release_date'
+            )
 
     def _fetch_raw(self):
         query = util.url_encode(dict(self))
@@ -197,7 +197,7 @@ class ContentSearchQuery(Query):
         try:
             data = urllib2.urlopen(url)
             return json.load(data)
-        except urllib2.URLError, e:
+        except urllib2.URLError:
             raise exception.service_unavailable()
 
     def _make_matches(self, raw):
@@ -217,11 +217,11 @@ class ContentSearchQuery(Query):
         raw = self._fetch_raw()
         self._make_matches(raw)
         response = dict(
-            matches = raw['response']['docs'],
-            found = raw['response']['numFound'],
-            limit = int(self.limit.value),
-            offset = int(self.offset.value)
-            )
+            matches=raw['response']['docs'],
+            found=raw['response']['numFound'],
+            limit=int(self.limit.value),
+            offset=int(self.offset.value)
+        )
         if  hasattr(self, 'facet'):
             response['facets'] = dict()
             response['facets'].update(
@@ -236,12 +236,12 @@ class FilteredContentSearchQuery(ContentSearchQuery):
 
     _default_field = 'id'
 
-    def __init__(self, endpoint = '', filter_id = '', **kwargs):
+    def __init__(self, endpoint='', filter_id='', **kwargs):
 
         self.fq = parameters.StrParam(
-            default = '%s:%s' % (endpoint, filter_id),
-            origin = 'fq'
-            )
+            default='%s:%s' % (endpoint, filter_id),
+            origin='fq'
+        )
         super(FilteredContentSearchQuery, self).__init__(**kwargs)
         self._endpoint = endpoint
         self._id = filter_id
@@ -272,14 +272,14 @@ class DisplayClientQuery(Query):
         row = g.db.execute('SELECT * FROM client WHERE api_key=?',
                 (g.api_key,)).fetchone()
         return dict(
-            api_key = row[0],
-            tier = row[1],
-            name = row[2],
-            email = row[3],
-            requests = row[4],
-            reset = row[5],
-            quota = current_app.config['ACCESS_TIERS'][row[1]]
-            )
+            api_key=row[0],
+            tier=row[1],
+            name=row[2],
+            email=row[3],
+            requests=row[4],
+            reset=row[5],
+            quota=current_app.config['ACCESS_TIERS'][row[1]]
+        )
 
 
 class RegisterClientQuery(Query):
@@ -293,16 +293,16 @@ class RegisterClientQuery(Query):
         super(RegisterClientQuery, self).__init__(**kwargs)
 
     def _verify_captcha(self):
-        if current_app.config['TESTING'] == True:
+        if current_app.config['TESTING']:
             return True
         data = urllib.urlencode(
             dict(
-                privatekey = current_app.config['RECAPTCHA_PRIVATE_KEY'],
-                remoteip = request.remote_addr,
-                challenge = self.challenge.value,
-                response = self.response.value
-                )
+                privatekey=current_app.config['RECAPTCHA_PRIVATE_KEY'],
+                remoteip=request.remote_addr,
+                challenge=self.challenge.value,
+                response=self.response.value
             )
+        )
         url = 'http://www.google.com/recaptcha/api/verify'
         return 'true' in urllib.urlopen(url, data).readline()
 
@@ -316,7 +316,7 @@ class RegisterClientQuery(Query):
         email = self.email.value
         requests = 0
         reset = int(time.time())
-        quota = current_app.config['ACCESS_TIERS']['free']
+        # quota = current_app.config['ACCESS_TIERS']['free']
         query = 'INSERT INTO client VALUES (?, ?, ?, ?, ?, ?)'
         g.db.execute(query, (g.api_key, tier, name, email, requests, reset))
         return DisplayClientQuery().fetch()
@@ -325,7 +325,7 @@ class RegisterClientQuery(Query):
 class QueryFactory(object):
     """A factory class for general endpoint queries."""
 
-    def __init__(self, endpoint = '', **kwargs):
+    def __init__(self, endpoint='', **kwargs):
         if endpoint == 'author':
             self.__class__ = AuthorSearchQuery
         elif endpoint == 'client':
@@ -351,20 +351,20 @@ class ContentIdQuery(Query):
     _endpoint = 'content'
     __action = 'id'
 
-    def __init__(self, content_id = '', **kwargs):
+    def __init__(self, content_id='', **kwargs):
         self.fields = parameters.CsvParam(
-            default = ('categories,creators,href,keywords,relations,release_'
+            default=('categories,creators,href,keywords,relations,release_'
                 'date,supertitle,teaser_text,teaser_title,title,uri,uuid'),
-            key = 'fields'
-                )
+            key='fields'
+        )
         self.fq = parameters.StrParam(
-            default = 'uuid:%s' % content_id,
-            origin = 'fq'
-            )
+            default='uuid:%s' % content_id,
+            origin='fq'
+        )
         self.q = parameters.StrParam(
-            origin = 'q',
-            default = '*:*'
-            )
+            origin='q',
+            default='*:*'
+        )
         super(ContentIdQuery, self).__init__(**kwargs)
 
     def _fetch_raw(self):
@@ -374,21 +374,21 @@ class ContentIdQuery(Query):
         try:
             data = urllib2.urlopen(url)
             return json.load(data)
-        except urllib2.URLError, e:
+        except urllib2.URLError:
             raise exception.service_unavailable()
 
     def _fetch_keywords(self, keywords):
         for keyword in keywords:
             query = 'SELECT type, value FROM keyword WHERE id = ?;'
             row = g.db.execute(query, (keyword,)).fetchone()
-            if row == None:
+            if row is None:
                 continue
             yield dict(
-                rel = row[0],
-                name = row[1],
-                uri = '%s/keyword/%s' % (current_app.config['API_URL'],
+                rel=row[0],
+                name=row[1],
+                uri='%s/keyword/%s' % (current_app.config['API_URL'],
                     keyword)
-                )
+            )
 
     def _fetch_relations(self, relations):
         for relation in relations:
@@ -401,18 +401,18 @@ class ContentIdQuery(Query):
             except:
                 continue
             yield dict(
-                rel = 'related',
-                name = title,
-                uri = '%s/content/%s' % (current_app.config['API_URL'],
+                rel='related',
+                name=title,
+                uri='%s/content/%s' % (current_app.config['API_URL'],
                     relation)
-                )
+            )
 
     def _fetch_authors(self, authors):
         for author in authors:
             yield dict(
-                rel = 'author',
-                name = author,
-                uri = '%s/author/%s' % (current_app.config['API_URL'],
+                rel='author',
+                name=author,
+                uri='%s/author/%s' % (current_app.config['API_URL'],
                     author.replace(' ', '-'))
             )
 
@@ -421,11 +421,11 @@ class ContentIdQuery(Query):
         row = g.db.execute(query).fetchone()
         if row:
             yield dict(
-                rel = type,
-                name = row[0],
-                uri = '%s/%s/%s' % (current_app.config['API_URL'],
+                rel=type,
+                name=row[0],
+                uri='%s/%s/%s' % (current_app.config['API_URL'],
                     endpoint, cat_id)
-                )
+            )
 
     def fetch(self):
         raw = self._fetch_raw()
@@ -444,36 +444,38 @@ class ContentIdQuery(Query):
             doc[key] = []
 
         for key in blacklist:
-            if doc.has_key(key): del doc[key]
+            if key in doc:
+                del doc[key]
 
         if 'uri' in self.fields:
             doc['uri'] = '%s/%s/%s' % (current_app.config['API_URL'],
                 self._endpoint, doc['uuid'])
 
-        if doc.has_key('keyword') and 'keywords' in self.fields:
+        if 'keyword' in doc and 'keywords' in self.fields:
             kw = self._fetch_keywords(doc['keyword'])
             doc['keywords'].extend(kw)
             del doc['keyword']
 
-        if doc.has_key('related') and 'relations' in self.fields:
+        if 'related' in doc and 'relations' in self.fields:
             rl = self._fetch_relations(doc['related'])
             doc['relations'].extend(rl)
             del doc['related']
 
-        if doc.has_key('author') and 'creators' in self.fields:
+        if 'author' in doc and 'creators' in self.fields:
             au = self._fetch_authors(doc['author'])
             doc['creators'].extend(au)
             del doc['author']
 
         for category, endpoint in categories:
-            if doc.has_key(category) and 'categories' in self.fields:
+            if category in doc and 'categories' in self.fields:
                 cat_id = doc[category]
                 cat = self._fetch_category(endpoint, cat_id, category)
                 doc['categories'].extend(cat)
                 del doc[category]
 
         for key in doc.keys():
-            if key not in self.fields: del doc[key]
+            if key not in self.fields:
+                del doc[key]
 
         return doc
 
@@ -488,7 +490,7 @@ class DefinitionQuery(Query):
         url = '%s/%s' % (current_app.config['API_URL'], endpoint)
         params = dict(p for p in query_class().params())
         doc = query_class().__doc__
-        return endpoint, dict(url = url, params = params, doc = doc)
+        return endpoint, dict(url=url, params=params, doc=doc)
 
     def fetch(self):
         endpoints = {'author': AuthorSearchQuery,

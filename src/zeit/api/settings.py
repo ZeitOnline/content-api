@@ -9,6 +9,7 @@
     License: BSD, see LICENSE.md for more details.
 """
 
+
 class Config(object):
 
     ACCESS_TIMEFRAME = 86400

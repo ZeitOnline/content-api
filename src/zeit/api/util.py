@@ -9,7 +9,10 @@
     License: BSD, see LICENSE.md for more details.
 """
 
-import re, sqlite3, urllib, urlparse
+import re
+import urllib
+import urlparse
+
 
 def append_to_csv(csv, new):
     """Add a new value to a string formatted, comma separted value list."""
@@ -20,12 +23,14 @@ def append_to_csv(csv, new):
     arr.append(new)
     return ','.join(arr)
 
+
 def csv_to_list(csv):
     """Convert a csv string to an array, while ommitting empty entries."""
 
     for val in csv.split(','):
         if val != '':
             yield val
+
 
 def dict_by_list(dic, arr):
     """Filter a dictionary by a list of valid keys."""
@@ -34,6 +39,7 @@ def dict_by_list(dic, arr):
         if key in arr:
             yield key, dic[key]
 
+
 def ensure_prefix(string, prefix):
     """Ensure, that a string is prefixed by another string."""
 
@@ -41,23 +47,26 @@ def ensure_prefix(string, prefix):
         return string
     return prefix + string
 
+
 def iri_to_uri(iri):
     """Convert an Internationalized Resource Identifier to a URI."""
 
     parts = urlparse.urlparse(iri)
     return urlparse.urlunparse(
-        part.encode('idna') if parti == 1 else\
+        part.encode('idna') if parti == 1 else
             url_encode_non_ascii(part.encode('utf-8'))
         for parti, part in enumerate(parts)
     )
 
-def save_xpath(element, xpath, fallback = ''):
+
+def save_xpath(element, xpath, fallback=''):
     """Safely return the first result of an xpath expression."""
 
     try:
         return element.xpath(xpath)[0]
     except IndexError:
         return fallback
+
 
 def url_encode(data):
     """Safely encode a dictionary to a URL compatible string."""
@@ -71,6 +80,7 @@ def url_encode(data):
         else:
             param[key] = val
     return urllib.urlencode(param, True)
+
 
 def url_encode_non_ascii(href):
     """URL-encode non ascii characters."""
