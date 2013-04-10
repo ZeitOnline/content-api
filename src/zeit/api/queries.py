@@ -430,7 +430,7 @@ class ContentIdQuery(Query):
 		categories = [('department', 'department'), ('product', 'product'),
 			('sub_department', 'department'), ('series', 'series')]
 		whitelist = ['categories', 'creators', 'keywords', 'relations']
-		blacklist = ['body']
+		blacklist = []
 
 		for key in whitelist:
 			doc[key] = []
