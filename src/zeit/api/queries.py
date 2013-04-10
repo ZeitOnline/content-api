@@ -12,9 +12,17 @@
     License: BSD, see LICENSE.md for more details.
 """
 
+import json
+import exceptions
+import os
+import time
+import urllib
+import urllib2
+import warnings
+
 from flask import g, current_app as current_app, request
-import json, os, time, urllib, urllib2, exception, util, warnings
-from parameters import *
+
+from . import exception, parameters, util
 
 
 class Query(object):
@@ -36,7 +44,7 @@ class Query(object):
 
     def __iter__(self):
         for param in self.__dict__.values():
-            if isinstance(param, Param):
+            if isinstance(param, parameters.Param):
                 yield (param.origin or param.key, param.value)
 
     def __str__(self):
@@ -47,7 +55,7 @@ class Query(object):
 
     def params(self):
         for param in self.__dict__.values():
-            if isinstance(param, Param) and param.key:
+            if isinstance(param, parameters.Param) and param.key:
                 yield (param.key, param.value)
 
 
@@ -57,9 +65,9 @@ class SearchQuery(Query):
     _default_field = 'value'
 
     def __init__(self, endpoint, **kwargs):
-        self.q = SqlQParam()
-        self.limit = LimitParam()
-        self.offset = OffsetParam()
+        self.q = parameters.SqlQParam()
+        self.limit = parameters.LimitParam()
+        self.offset = parameters.OffsetParam()
         self._endpoint = endpoint
         super(SearchQuery, self).__init__(**kwargs)
 
@@ -97,7 +105,7 @@ class AuthorSearchQuery(SearchQuery):
     """Search query for content authors."""
 
     def __init__(self, **kwargs):
-        self.fields = FieldsParam(
+        self.fields = parameters.FieldsParam(
             default = 'href,id,type,uri,value'
             )
         super(AuthorSearchQuery, self).__init__('author', **kwargs)
@@ -107,7 +115,7 @@ class DepartmentSearchQuery(SearchQuery):
     """Search query for newspaper departments."""
 
     def __init__(self, **kwargs):
-        self.fields = FieldsParam(
+        self.fields = parameters.FieldsParam(
             default = 'href,id,parent,uri,value'
             )
         super(DepartmentSearchQuery, self).__init__('department', **kwargs)
@@ -117,7 +125,7 @@ class KeywordSearchQuery(SearchQuery):
     """Search query for available keywords."""
 
     def __init__(self, **kwargs):
-        self.fields = FieldsParam(
+        self.fields = parameters.FieldsParam(
             default = 'href,id,lexical,score,type,uri,value'
             )
         super(KeywordSearchQuery, self).__init__('keyword', **kwargs)
@@ -127,7 +135,7 @@ class ProductSearchQuery(SearchQuery):
     """Search query for publication products."""
 
     def __init__(self, **kwargs):
-        self.fields = FieldsParam(
+        self.fields = parameters.FieldsParam(
             default = 'href,id,uri,value'
             )
         super(ProductSearchQuery, self).__init__('product', **kwargs)
@@ -137,7 +145,7 @@ class SeriesSearchQuery(SearchQuery):
     """Search query for article series."""
 
     def __init__(self, **kwargs):
-        self.fields = FieldsParam(
+        self.fields = parameters.FieldsParam(
             default = 'href,id,name,uri,value'
             )
         super(SeriesSearchQuery, self).__init__('series', **kwargs)
@@ -150,34 +158,34 @@ class ContentSearchQuery(Query):
     __action = 'search'
 
     def __init__(self, **kwargs):
-        self.q = StrParam(
+        self.q = parameters.StrParam(
             key = 'q',
             origin = 'q',
             default = '*:*'
             )
-        self.sort = StrParam(
+        self.sort = parameters.StrParam(
             key = 'sort',
             origin = 'sort',
             default = 'release_date desc'
             )
-        self.fields = FieldsParam(
+        self.fields = parameters.FieldsParam(
             default = ('subtitle,uuid,title,href,release_date,'
                 'uri,snippet,supertitle,teaser_title,teaser_text'),
             enforce = 'uuid'
             )
-        self.facet_date = FacetDateParam()
-        self.facet_field = FacetFieldParam()
-        self.limit = LimitParam()
-        self.offset = OffsetParam()
+        self.facet_date = parameters.FacetDateParam()
+        self.facet_field = parameters.FacetFieldParam()
+        self.limit = parameters.LimitParam()
+        self.offset = parameters.OffsetParam()
         super(ContentSearchQuery, self).__init__(**kwargs)
         if self.facet_field.value != '' or self.facet_date.value != '':
-            self.facet = StrParam(
+            self.facet = parameters.StrParam(
                 key = 'facet',
                 origin = 'facet',
                 default = 'true'
                 )
         if self.facet_date.value != '':
-            self.facet_date_field = StrParam(
+            self.facet_date_field = parameters.StrParam(
                 origin = 'facet.date',
                 default = 'release_date'
                 )
@@ -230,7 +238,7 @@ class FilteredContentSearchQuery(ContentSearchQuery):
 
     def __init__(self, endpoint = '', filter_id = '', **kwargs):
 
-        self.fq = StrParam(
+        self.fq = parameters.StrParam(
             default = '%s:%s' % (endpoint, filter_id),
             origin = 'fq'
             )
@@ -278,10 +286,10 @@ class RegisterClientQuery(Query):
     """Register a new API client with a POST request."""
 
     def __init__(self, **kwargs):
-        self.name = StrParam()
-        self.email = StrParam()
-        self.challenge = StrParam()
-        self.response = StrParam()
+        self.name = parameters.StrParam()
+        self.email = parameters.StrParam()
+        self.challenge = parameters.StrParam()
+        self.response = parameters.StrParam()
         super(RegisterClientQuery, self).__init__(**kwargs)
 
     def _verify_captcha(self):
@@ -344,16 +352,16 @@ class ContentIdQuery(Query):
     __action = 'id'
 
     def __init__(self, content_id = '', **kwargs):
-        self.fields = CsvParam(
+        self.fields = parameters.CsvParam(
             default = ('categories,creators,href,keywords,relations,release_'
                 'date,supertitle,teaser_text,teaser_title,title,uri,uuid'),
             key = 'fields'
                 )
-        self.fq = StrParam(
+        self.fq = parameters.StrParam(
             default = 'uuid:%s' % content_id,
             origin = 'fq'
             )
-        self.q = StrParam(
+        self.q = parameters.StrParam(
             origin = 'q',
             default = '*:*'
             )

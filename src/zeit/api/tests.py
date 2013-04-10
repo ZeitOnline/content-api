@@ -8,8 +8,12 @@
     Copyright: (c) 2013 by ZEIT ONLINE.
     License: BSD, see LICENSE.md for more details.
 """
+import json
+import random
+import unittest
+import werkzeug
 
-import application, json, unittest, urllib, random, werkzeug
+from . import application
 
 
 class ClientTestCase(unittest.TestCase):

@@ -11,7 +11,9 @@
     License: BSD, see LICENSE.md for more details.
 """
 
-import exception, exceptions, re, warnings, util
+import re
+
+from . import exception, util
 
 
 class Param(object):

@@ -9,10 +9,14 @@
     Copyright: (c) 2013 by ZEIT ONLINE.
     License: BSD, see LICENSE.md for more details.
 """
+import contextlib
+import sqlite3
 
+import flask
 from flask import g, jsonify, current_app as current_app
 from werkzeug.datastructures import ImmutableDict
-import access, metadata, contextlib, exception, flask, queries, sqlite3
+
+from . import access, metadata, exception, queries
 
 
 api_server = flask.Blueprint('api_server', __name__)

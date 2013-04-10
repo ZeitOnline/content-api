@@ -8,9 +8,11 @@
     Copyright: (c) 2013 by ZEIT ONLINE.
     License: BSD, see LICENSE.md for more details.
 """
+import time
 
 from flask import g, current_app as current_app
-import exception, time
+
+from . import exception
 
 
 class Verifictaion(object):

@@ -11,7 +11,9 @@
     License: BSD, see LICENSE.md for more details.
 """
 
-import blueprints, flask, settings
+import flask
+
+from . import settings, blueprints
 
 
 def make_app(blueprint, config):
