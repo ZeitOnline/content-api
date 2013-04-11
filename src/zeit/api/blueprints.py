@@ -151,10 +151,10 @@ def documentation(path):
         doc_url=current_app.config['DOC_URL']
     )
     try:
-        return flask.render_template(path + '.html', context)
+        return flask.render_template(path + '.html', **context)
     except Exception, e:
         current_app.logger.error('%r: %s' % (e, e.message))
-        rendered = flask.render_template('error.html', context)
+        rendered = flask.render_template('error.html', **context)
         return flask.make_response(rendered, 404)
 
 
