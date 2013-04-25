@@ -45,7 +45,7 @@ class Param(object):
         return str(self.value)
 
     def valid(self, value):
-        assert value is None
+        pass
 
 
 class StrParam(Param):
