@@ -316,7 +316,6 @@ class RegisterClientQuery(Query):
         email = self.email.value
         requests = 0
         reset = int(time.time())
-        # quota = current_app.config['ACCESS_TIERS']['free']
         query = 'INSERT INTO client VALUES (?, ?, ?, ?, ?, ?)'
         g.db.execute(query, (g.api_key, tier, name, email, requests, reset))
         return DisplayClientQuery().fetch()
