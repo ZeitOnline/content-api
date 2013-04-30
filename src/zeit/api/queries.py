@@ -247,6 +247,9 @@ class FilteredContentSearchQuery(ContentSearchQuery):
         self._id = filter_id
 
     def fetch(self):
+        if self._endpoint not in ('author', 'content', 'department', 'keyword',
+                'product', 'series'):
+            raise exception.endpoint_not_found()
         sql = 'SELECT * FROM %s WHERE %s LIKE :q;'
         query = sql % (self._endpoint, self._default_field)
         result = g.db.execute(query, {'q': self._id}).fetchall()
