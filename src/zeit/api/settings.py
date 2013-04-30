@@ -9,29 +9,32 @@
     License: BSD, see LICENSE.md for more details.
 """
 
+import urllib2
+import warnings
 
-class Config(object):
+
+class Config:
 
     ACCESS_TIMEFRAME = 86400
-    ACCESS_TIERS = {'free': 10000, 'pro': 50000, 'max': 100000}
+    ACCESS_TIERS = dict(free=10000, pro=50000, max=100000)
 
-    SCHEMA = '/schemas/database.sql'
     DATABASE = '/var/lib/zon-api/data.db'
-    PRODUCT_ALPHABET = ''
-    SERIES_ALPHABET = ''
-    KEYWORD_ALPHABET = ''
-    DEPARTMENT_ALPHABET = ''
-    RECAPTCHA_PRIVATE_KEY = ''
-    RECAPTCHA_PUBLIC_KEY = ''
+    SCHEMA = '/schemas/database.sql'
+
+    TESTING = False
 
     try:
         import private
+        DEPARTMENT_ALPHABET = private.DEPARTMENT_ALPHABET
+        KEYWORD_ALPHABET = private.KEYWORD_ALPHABET
         PRODUCT_ALPHABET = private.PRODUCT_ALPHABET
         SERIES_ALPHABET = private.SERIES_ALPHABET
-        KEYWORD_ALPHABET = private.KEYWORD_ALPHABET
-        DEPARTMENT_ALPHABET = private.DEPARTMENT_ALPHABET
     except:
-        pass
+        warnings.warn('No alphabet URLs are configured.')
+        DEPARTMENT_ALPHABET = ''
+        KEYWORD_ALPHABET = ''
+        PRODUCT_ALPHABET = ''
+        SERIES_ALPHABET = ''
 
 
 class ProductionConfig(Config):
@@ -41,11 +44,16 @@ class ProductionConfig(Config):
     SOLR_URL = 'http://127.0.0.1:8983/solr'
 
     try:
+        urllib2.urlopen(SOLR_URL, timeout=3)
+    except:
+        warnings.warn('Local Solr server seems to be unreachable.')
+
+    try:
         import private
         RECAPTCHA_PRIVATE_KEY = private.RECAPTCHA_PRIVATE_PROD
         RECAPTCHA_PUBLIC_KEY = private.RECAPTCHA_PUBLIC_PROD
     except:
-        pass
+        warnings.warn('No production Recaptcha API keys found.')
 
 
 class DevelopmentConfig(Config):
@@ -54,16 +62,17 @@ class DevelopmentConfig(Config):
     API_URL = 'http://api-test.zeit.de:8080'
     SOLR_URL = 'http://127.0.0.1:8983/solr'
 
-    import urllib
-    if urllib.urlopen(SOLR_URL).getcode() == 404:
-        SOLR_URL = 'http://developer.zeit.de:8983/solr'
+    try:
+        urllib2.urlopen(SOLR_URL, timeout=3)
+    except:
+        warnings.warn('Local Solr server seems to be unreachable.')
 
     try:
         import private
         RECAPTCHA_PRIVATE_KEY = private.RECAPTCHA_PRIVATE_DEVEL
         RECAPTCHA_PUBLIC_KEY = private.RECAPTCHA_PUBLIC_DEVEL
     except:
-        pass
+        warnings.warn('No development Recaptcha API keys found.')
 
 
 class LocalConfig(DevelopmentConfig):
