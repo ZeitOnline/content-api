@@ -1,6 +1,12 @@
 #Changelog
 
-##2. Jan 2013
+## 25. Apr 2013
+* [FIXED] URLs for sub-departments now working correctly
+
+## 21. Apr 2013
+* [FIXED] Keyword IDs are now URL-safe
+
+##02. Jan 2013
 * [IMPROVED] API explorer performance
 
 ##21. Dec 2012
