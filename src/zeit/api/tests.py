@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
     zeit.api.tests
-    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~
 
     This module contains automated testing functionalities.
 
     Copyright: (c) 2013 by ZEIT ONLINE.
     License: BSD, see LICENSE.md for more details.
 """
+
 import json
 import random
 import unittest

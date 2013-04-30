@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     zeit.api.settings
-    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~
 
     This module contains config classes for different build scenarios.
 

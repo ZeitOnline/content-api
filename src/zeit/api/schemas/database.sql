@@ -1,6 +1,6 @@
 /*
     zeit.api.schemas.database
-    ~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     These are the initialization statements for the main SQLite database.
 

@@ -9,6 +9,7 @@
     Copyright: (c) 2013 by ZEIT ONLINE.
     License: BSD, see LICENSE.md for more details.
 """
+
 import contextlib
 import sqlite3
 
