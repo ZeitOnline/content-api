@@ -29,13 +29,13 @@ adaptation. See below for instructions.
 ###How can I get in touch?
 We would love to hear your ideas and feedback. Join the discussion in the
 [issues section](http://github.com/ZeitOnline/content-api/issues), contact us
-on twitter at [zeitonline_dev](http://twitter.com/zeitonline_dev) or send an
-email to [api@zeit.de](mailto:api@zeit.de).
+on Twitter at [zeitonline_dev](http://twitter.com/zeitonline_dev) or send an
+Email to [api@zeit.de](mailto:api@zeit.de).
 
 
 ##Getting started
 
-Check out the repository, change to the project folder and bootstrap the
+Check out the repository, change to the project folder and then bootstrap the
 project like this:
 
     $ python bootstrap.py
@@ -44,7 +44,12 @@ Now run buildout with the development configuration:
 
     $ bin/buildout -c dev.cfg
 
-This will install dependencies and generate executables for the API, the
-developer portal and the testsuite in the bin folder.
+This will install dependencies, generate executables for the API, the developer
+portal and the testsuite and download a Solr package. To start the Solr
+locally, switch to parts/solr-server and enter:
 
-    $ bin/api
+    $ java -jar start.jar
+
+With the search server running, you can now start the testsuite:
+
+    $ bin/tests
