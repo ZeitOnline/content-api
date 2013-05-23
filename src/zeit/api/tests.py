@@ -132,7 +132,7 @@ class ParameterTestCase(unittest.TestCase):
                     headers=self.headers
                 )
                 matches = json.loads(resp.data).get('matches', [])
-                self.assertEqual(len(matches), result)
+                self.assertTrue(len(matches) <= result)
 
     def test_offset_parameter(self):
         """Offset parameter behaves as expected."""
@@ -173,8 +173,13 @@ class ParameterTestCase(unittest.TestCase):
                         headers=self.headers
                     )
                     print 'Checking /' + ep + ' with ' + str(query_string)
-                    parsed_fields = json.loads(resp.data)['matches'][0].keys()
-                    sd = set(perm_fields).symmetric_difference(set(parsed_fields))
+
+                    matches = json.loads(resp.data)['matches']
+                    if len(matches) == 0: continue
+
+                    parsed_fields = set(matches[0].keys())
+                    sd = set(perm_fields).symmetric_difference(parsed_fields)
+
                     self.assertTrue(sd.issubset(['snippet']))
 
 
