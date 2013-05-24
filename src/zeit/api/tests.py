@@ -17,6 +17,22 @@ import werkzeug
 from . import application
 
 
+class AuthorizedTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.client = application.test_client_factory()
+        data = dict(name='Some Name', email='mail@provider.tld')
+        resp = self.client.post('/client', data=data)
+        self.headers = werkzeug.datastructures.Headers()
+        self.headers.add('X-Authorization', json.loads(resp.data)['api_key'])
+
+    def get_json(self, url, **data):
+        print 'Checking ' + url + ' with ' + str(data)
+        resp = self.client.get(url, data=data, headers=self.headers)
+        self.assertEqual(resp.status_code, 200)
+        return json.loads(resp.data)
+
+
 class ClientTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -53,51 +69,10 @@ class ClientTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
 
 
-class QueryTestCase(unittest.TestCase):
+class ParameterTestCase(AuthorizedTestCase):
 
     def setUp(self):
-        self.client = application.test_client_factory()
-        data = dict(name='Some Name', email='mail@provider.tld')
-        resp = self.client.post('/client', data=data)
-        self.headers = werkzeug.datastructures.Headers()
-        self.headers.add('X-Authorization', json.loads(resp.data)['api_key'])
-
-    def __get_json(self, url, data={}):
-        print 'Checking ' + url + ' with ' + str(data)
-        resp = self.client.get(url, headers=self.headers)
-        self.assertEqual(resp.status_code, 200)
-        return json.loads(resp.data)
-
-    def test_endpoint_availability(self):
-        """All endpoints up and running."""
-        endpoints = self.__get_json('/')
-        for path in endpoints:
-            if '{id}' in path:
-                continue
-            endpoint = self.__get_json('/' + path)
-            if 'matches' in endpoint:
-                for match in endpoint['matches']:
-                    ids = (match[i] for i in ['id', 'uuid'] if i in match)
-                    for i in list(ids):
-                        self.__get_json('/' + path + '/' + i)
-
-    def test_parameter_defaults(self):
-        """Parameters accepting their default values."""
-        for endpoint, definition in self.__get_json('/').items():
-            if '{id}' in endpoint:
-                continue
-            for param, val in definition['params'].items():
-                self.__get_json('/' + endpoint, {param: val})
-
-
-class ParameterTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.client = application.test_client_factory()
-        data = dict(name='Some Name', email='mail@provider.tld')
-        resp = self.client.post('/client', data=data)
-        self.headers = werkzeug.datastructures.Headers()
-        self.headers.add('X-Authorization', json.loads(resp.data)['api_key'])
+        super(ParameterTestCase, self).setUp()
         resp = self.client.get('/', headers=self.headers)
         self.endpoints = json.loads(resp.data)
 
@@ -181,6 +156,30 @@ class ParameterTestCase(unittest.TestCase):
                     sd = set(perm_fields).symmetric_difference(parsed_fields)
 
                     self.assertTrue(sd.issubset(['snippet']))
+
+
+class QueryTestCase(AuthorizedTestCase):
+
+    def test_endpoint_availability(self):
+        """All endpoints up and running."""
+        endpoints = self.get_json('/')
+        for path in endpoints:
+            if '{id}' in path:
+                continue
+            endpoint = self.get_json('/' + path)
+            if 'matches' in endpoint:
+                for match in endpoint['matches']:
+                    ids = (match[i] for i in ['id', 'uuid'] if i in match)
+                    for i in list(ids):
+                        self.get_json('/' + path + '/' + i)
+
+    def test_parameter_defaults(self):
+        """Parameters accepting their default values."""
+        for endpoint, definition in self.get_json('/').items():
+            if '{id}' in endpoint:
+                continue
+            for param, val in definition['params'].items():
+                self.get_json('/' + endpoint, **{param: val})
 
 
 if __name__ == '__main__':
