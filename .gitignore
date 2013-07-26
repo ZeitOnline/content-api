@@ -1,9 +1,11 @@
 *.py[cod]
 *.egg
 *.egg-info
+*.wsgi
 dist
 build
 eggs
+etc
 parts
 bin
 var
