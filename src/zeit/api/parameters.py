@@ -13,7 +13,8 @@
 
 import re
 
-from . import exception, util
+from zeit.api.util import ensure_prefix
+from zeit.api.exception import BadRequest
 
 
 class Param(object):
@@ -39,7 +40,7 @@ class Param(object):
             self.valid(value)
             self._value = value
         except AssertionError:
-            raise exception.JSONBadRequest()
+            raise BadRequest()
 
     def __repr__(self):
         return str(self.value)
@@ -84,7 +85,7 @@ class SqlQParam(StrParam):
             self.valid(value)
             self._value = value.replace('*', '%')
         except AssertionError:
-            raise exception.JSONBadRequest()
+            raise BadRequest()
 
 
 class FacetFieldParam(StrParam):
@@ -132,9 +133,9 @@ class FacetDateParam(StrParam):
     def value(self, value):
         try:
             self.valid(value)
-            self._value = util.ensure_prefix(value, '+').upper()
+            self._value = ensure_prefix(value, '+').upper()
         except AssertionError:
-            raise exception.JSONBadRequest()
+            raise BadRequest()
 
 
 class IntParam(Param):
@@ -228,4 +229,4 @@ class FieldsParam(CsvParam):
             self.valid(value)
             self._value = value if '*' not in value else self.default
         except AssertionError:
-            raise exception.JSONBadRequest()
+            raise BadRequest()

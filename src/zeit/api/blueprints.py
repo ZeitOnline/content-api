@@ -17,7 +17,9 @@ import flask
 from flask import g, jsonify, current_app as current_app
 from werkzeug.datastructures import ImmutableDict
 
-from . import access, metadata, exception, queries
+from . import access, metadata, queries
+from zeit.api.exception import BadRequest, ResourceNotFound, MethodNotAllowed, \
+    InternalServerError
 
 
 api_server = flask.Blueprint('api_server', __name__)
@@ -28,22 +30,22 @@ developer_portal.jinja_options = ImmutableDict(
 
 @api_server.app_errorhandler(400)
 def handle_bad_request(error):
-    return exception.bad_request(error)
+    return BadRequest(error)
 
 
 @api_server.app_errorhandler(404)
 def handle_resource_not_found(error):
-    return exception.resource_not_found(error)
+    return ResourceNotFound(error)
 
 
 @api_server.app_errorhandler(405)
 def handle_method_not_allowed(error):
-    return exception.method_not_allowed(error)
+    return MethodNotAllowed(error)
 
 
 @api_server.app_errorhandler(500)
 def handle_internal_server_error(error):
-    return exception.internal_server_error(error)
+    return InternalServerError(error)
 
 
 @api_server.before_app_first_request

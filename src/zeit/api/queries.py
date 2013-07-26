@@ -22,7 +22,9 @@ import warnings
 
 from flask import g, current_app as current_app, request
 
-from . import exception, parameters, util
+from . import parameters, util
+from zeit.api.exception import BadRequest, EndpointNotFound, ResourceNotFound, \
+    ServiceUnavailable
 
 
 class Query(object):
@@ -155,7 +157,7 @@ class ContentSearchQuery(Query):
     """Unfiltered content search query."""
 
     _endpoint = 'content'
-    __action = 'search'
+    _action = 'search'
 
     def __init__(self, **kwargs):
         self.q = parameters.StrParam(
@@ -193,12 +195,12 @@ class ContentSearchQuery(Query):
     def _fetch_raw(self):
         query = util.url_encode(dict(self))
         url = '%s/%s/%s?%s' % (current_app.config['SOLR_URL'],
-            self.__class__._endpoint, self.__action, query)
+            self.__class__._endpoint, self._action, query)
         try:
             data = urllib2.urlopen(url)
             return json.load(data)
         except urllib2.URLError:
-            raise exception.service_unavailable()
+            raise ServiceUnavailable()
 
     def _make_matches(self, raw):
         for match in raw['response']['docs']:
@@ -249,12 +251,12 @@ class FilteredContentSearchQuery(ContentSearchQuery):
     def fetch(self):
         if self._endpoint not in ('author', 'content', 'department', 'keyword',
                 'product', 'series'):
-            raise exception.endpoint_not_found()
+            raise EndpointNotFound()
         sql = 'SELECT * FROM %s WHERE %s LIKE :q;'
         query = sql % (self._endpoint, self._default_field)
         result = g.db.execute(query, {'q': self._id}).fetchall()
         if len(result) == 0:
-            raise exception.resource_not_found()
+            raise ResourceNotFound()
         if self._endpoint == 'author':
             self.fq.value = self.fq.value.replace('-', '*')
         meta = dict(zip(QueryFactory(self._endpoint).fields, result[0]))
@@ -312,7 +314,7 @@ class RegisterClientQuery(Query):
     def push(self):
         empty = self.name.value == '' or self.email.value == ''
         if empty or not self._verify_captcha():
-            raise exception.bad_request()
+            raise BadRequest()
         g.api_key = str(os.urandom(26).encode('hex'))
         tier = 'free'
         name = self.name.value
@@ -343,7 +345,7 @@ class QueryFactory(object):
         elif endpoint == 'series':
             self.__class__ = SeriesSearchQuery
         else:
-            raise exception.endpoint_not_found()
+            raise En()
         self.__init__(**kwargs)
 
 
@@ -351,7 +353,7 @@ class ContentIdQuery(Query):
     """Display content item with the given id."""
 
     _endpoint = 'content'
-    __action = 'id'
+    _action = 'id'
 
     def __init__(self, content_id='', **kwargs):
         self.fields = parameters.CsvParam(
@@ -372,12 +374,12 @@ class ContentIdQuery(Query):
     def _fetch_raw(self):
         query = util.url_encode(dict(self))
         url = '%s/%s/%s?%s' % (current_app.config['SOLR_URL'],
-            self.__class__._endpoint, self.__action, query)
+            self.__class__._endpoint, self._action, query)
         try:
             data = urllib2.urlopen(url)
             return json.load(data)
         except urllib2.URLError:
-            raise exception.service_unavailable()
+            raise ServiceUnavailable()
 
     def _fetch_keywords(self, keywords):
         for keyword in keywords:
@@ -433,7 +435,7 @@ class ContentIdQuery(Query):
         raw = self._fetch_raw()
 
         if len(raw['response']['docs']) == 0:
-            raise exception.resource_not_found()
+            raise ResourceNotFound()
         else:
             doc = raw['response']['docs'][0]
 
