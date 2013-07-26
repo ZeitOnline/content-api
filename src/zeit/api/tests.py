@@ -14,7 +14,7 @@ import random
 import unittest
 import werkzeug
 
-from . import application
+from zeit.api import application
 
 
 class AuthorizedTestCase(unittest.TestCase):

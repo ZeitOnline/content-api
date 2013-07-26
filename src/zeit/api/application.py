@@ -13,7 +13,7 @@
 
 import flask
 
-from . import settings, blueprints
+from zeit.api import settings, blueprints
 
 
 def make_app(blueprint, config):

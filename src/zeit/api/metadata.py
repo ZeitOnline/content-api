@@ -15,7 +15,7 @@ import urllib
 from flask import g, current_app
 from lxml import etree
 
-from .util import iri_to_uri, save_xpath
+from zeit.api.util import iri_to_uri, save_xpath
 
 
 def __update_product(product):
