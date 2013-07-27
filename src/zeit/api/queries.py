@@ -23,8 +23,8 @@ import warnings
 from flask import g, current_app as current_app, request
 
 from zeit.api import parameters, util
-from zeit.api.exception import BadRequest, EndpointNotFound, ResourceNotFound, \
-    ServiceUnavailable
+from zeit.api.exceptions import BadRequest, EndpointNotFound, \
+    ResourceNotFound, ServiceUnavailable
 
 
 class Query(object):

@@ -14,7 +14,7 @@
 import re
 
 from zeit.api.util import ensure_prefix
-from zeit.api.exception import BadRequest
+from zeit.api.exceptions import BadRequest
 
 
 class Param(object):

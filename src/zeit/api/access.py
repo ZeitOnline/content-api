@@ -13,7 +13,7 @@ import time
 
 from flask import g, current_app
 
-from zeit.api.exception import TooManyRequests, Unauthorized
+from zeit.api.exceptions import TooManyRequests, Unauthorized
 
 
 class Verifictaion(object):

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-    zeit.api.exception
-    ~~~~~~~~~~~~~~~~~~
+    zeit.api.exceptions
+    ~~~~~~~~~~~~~~~~~~~
 
-    This module contains custom JSON exceptions. Not to be confused with the
-    similarly named flask module 'exceptions'. Exceptions correspond to
-    standard HTTP status codes.
+    This module contains custom JSON formatted HTTP exceptions. Not to be
+    confused with the identically named werkzeug module 'exceptions'.
+    Exceptions correspond to standard HTTP status codes.
 
     Copyright: (c) 2013 by ZEIT ONLINE.
     License: BSD, see LICENSE.md for more details.

@@ -17,9 +17,9 @@ import flask
 from flask import g, jsonify, current_app as current_app
 from werkzeug.datastructures import ImmutableDict
 
-from zeit.api import access, metadata, exception, queries
-from zeit.api.exception import BadRequest, ResourceNotFound, MethodNotAllowed, \
-    InternalServerError
+from zeit.api import access, metadata, queries
+from zeit.api.exceptions import BadRequest, ResourceNotFound, \
+    MethodNotAllowed, InternalServerError
 
 
 api_server = flask.Blueprint('api_server', __name__)
