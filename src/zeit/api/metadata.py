@@ -18,7 +18,7 @@ from lxml import etree
 from zeit.api.util import iri_to_uri, save_xpath
 
 
-def __update_product(product):
+def _update_product(product):
     """Update the given product entity."""
     product_id = save_xpath(product, './@id').lower()
     uri = '%s/product/%s' % (current_app.config['API_URL'], product_id)
@@ -28,7 +28,7 @@ def __update_product(product):
     g.db.execute(query, (href, product_id, uri, value))
 
 
-def __update_series(series):
+def _update_series(series):
     """Update the given series entity."""
     series_id = save_xpath(series, './@url')
     uri = '%s/series/%s' % (current_app.config['API_URL'], series_id)
@@ -39,7 +39,7 @@ def __update_series(series):
     g.db.execute(query, (href, series_id, name, uri, value))
 
 
-def __update_keyword(keyword, ranks, types):
+def _update_keyword(keyword, ranks, types):
     """Update the given keyword entity."""
     kw_id = save_xpath(keyword, './@url_value')
     uri = '%s/keyword/%s' % (current_app.config['API_URL'], kw_id)
@@ -54,7 +54,7 @@ def __update_keyword(keyword, ranks, types):
     g.db.execute(query, (href, kw_id, lexical, score, kw_type, uri, value))
 
 
-def __update_department(department):
+def _update_department(department):
     """Update the given department entity."""
     dept_id = save_xpath(department, './@label')
     if dept_id in ['startseite']:
@@ -69,7 +69,7 @@ def __update_department(department):
     g.db.execute(query, (href, dept_id, parent, uri, value))
 
 
-def __update_author(author):
+def _update_author(author):
     """Update the given author entity."""
     value = save_xpath(author, './@name')
     author_id = value.replace(' ', '-')
@@ -86,12 +86,12 @@ def update():
     """Update metadata of all categories and write changes to database."""
     products = current_app.config['PRODUCT_ALPHABET']
     for p in etree.parse(products).xpath('//product'):
-        __update_product(p)
+        _update_product(p)
 
     series = current_app.config['SERIES_ALPHABET']
     for s in etree.parse(series).xpath('//series'):
         print s
-        __update_series(s)
+        _update_series(s)
 
     keywords = current_app.config['KEYWORD_ALPHABET']
     parsed_keywords = etree.parse(keywords).xpath('//tag')
@@ -100,16 +100,16 @@ def update():
         'organization': 'organisationen'}
     for k in parsed_keywords:
         print k
-        __update_keyword(k, ranks, types)
+        _update_keyword(k, ranks, types)
 
     depts = current_app.config['DEPARTMENT_ALPHABET']
     for d in etree.parse(depts).xpath('/lists/list[@id="sitemap"]//link'):
         print d
-        __update_department(d)
+        _update_department(d)
 
     url = '/select?q=*:*&facet=true&facet.field=author'
     url += '&facet.limit=1000000&rows=0&facet.mincount=1'
     authors = current_app.config['SOLR_URL'] + url
     for a in etree.parse(authors).xpath('//lst[@name="author"]/int'):
         print a
-        __update_author(a)
+        _update_author(a)
