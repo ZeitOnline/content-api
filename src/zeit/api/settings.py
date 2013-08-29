@@ -9,11 +9,13 @@
     License: BSD, see LICENSE.md for more details.
 """
 
+import ConfigParser
+import os
 import urllib2
 import warnings
 
 
-class Config:
+class Config(object):
 
     ACCESS_TIMEFRAME = 86400
     ACCESS_TIERS = dict(free=10000, pro=50000, max=100000)
@@ -35,6 +37,14 @@ class Config:
         KEYWORD_ALPHABET = ''
         PRODUCT_ALPHABET = ''
         SERIES_ALPHABET = ''
+
+    def __init__(self):
+        filename = os.environ.get('ZEIT_API_SETTINGS', '')
+	if os.path.isfile(filename):
+	    config = ConfigParser.ConfigParser()
+	    config.read(filename)
+	    for key, value in config.items('settings'):
+                setattr(self, key.upper(), value)
 
 
 class ProductionConfig(Config):

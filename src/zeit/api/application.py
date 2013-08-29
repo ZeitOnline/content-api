@@ -28,14 +28,14 @@ def make_app(blueprint, config):
 def run_local_api():
     """Run an api server instance on a local development server."""
     cfg = settings.LocalConfig()
-    app = make_app(blueprints.api_server, settings.LocalConfig)
+    app = make_app(blueprints.api_server, cfg)
     app.run(host=cfg.SERVERNAME, port=cfg.API_PORT, debug=True)
 
 
 def run_local_doc():
     """Runs a developer portal instance on a local development server."""
     cfg = settings.LocalConfig()
-    app = make_app(blueprints.developer_portal, settings.LocalConfig)
+    app = make_app(blueprints.developer_portal, cfg)
     app.run(host=cfg.SERVERNAME, port=cfg.DOC_PORT, debug=True)
 
 
