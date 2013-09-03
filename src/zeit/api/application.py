@@ -41,25 +41,25 @@ def run_local_doc():
 
 def test_client_factory():
     """Return a client instance for automated testing."""
-    app = make_app(blueprints.api_server, settings.TestingConfig)
+    app = make_app(blueprints.api_server, settings.TestingConfig())
     return app.test_client()
 
 
 def api_factory(global_config, **local_conf):
     """Return an api server instance configured for production."""
-    return make_app(blueprints.api_server, settings.ProductionConfig)
+    return make_app(blueprints.api_server, settings.ProductionConfig())
 
 
 def doc_factory(global_config, **local_conf):
     """Return a developer portal instance configured for production."""
-    return make_app(blueprints.developer_portal, settings.ProductionConfig)
+    return make_app(blueprints.developer_portal, settings.ProductionConfig())
 
 
 def api_dev_factory(global_config, **local_conf):
     """Return an api server instance configured for development."""
-    return make_app(blueprints.api_server, settings.DevelopmentConfig)
+    return make_app(blueprints.api_server, settings.DevelopmentConfig())
 
 
 def doc_dev_factory(global_config, **local_conf):
     """Return a developer portal instance configured for development."""
-    return make_app(blueprints.developer_portal, settings.DevelopmentConfig)
+    return make_app(blueprints.developer_portal, settings.DevelopmentConfig())

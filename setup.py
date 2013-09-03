@@ -37,5 +37,8 @@ setup(
     [console_scripts]
     api = zeit.api.application:run_local_api
     doc = zeit.api.application:run_local_doc
+    [paste.app_factory]
+    api = zeit.api.application:api_factory
+    doc = zeit.api.application:doc_factory
     """
 )
