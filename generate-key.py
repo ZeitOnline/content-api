@@ -5,10 +5,16 @@ import sqlite3
 import sys
 import time
 
-if len(sys.argv) < 3:
-    raise ValueError('Usage: %s "Firstnam Lastname" email@example.com' % sys.argv[0])
-
 db = sqlite3.connect('/var/lib/zon-api/data.db')
+
+if len(sys.argv) < 3:
+    print('Usage: %s "Firstname Lastname" email@example.com' % sys.argv[0])
+    print('\nLast keys:')
+    query = 'SELECT * FROM client ORDER by reset DESC limit 10'
+    for client in db.execute(query):
+        print('{0}: "{2}" {3}'.format(*client))
+    sys.exit(1)
+
 api_key = str(os.urandom(26).encode('hex'))
 tier = 'free'
 name = sys.argv[1]
