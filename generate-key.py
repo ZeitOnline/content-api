@@ -10,9 +10,9 @@ db = sqlite3.connect('/var/lib/zon-api/data.db')
 if len(sys.argv) < 3:
     print('Usage: %s "Firstname Lastname" email@example.com' % sys.argv[0])
     print('\nLast keys:')
-    query = 'SELECT * FROM client ORDER by reset DESC limit 10'
+    query = 'SELECT * FROM client ORDER by reset DESC'
     for client in db.execute(query):
-        print('{0}: "{2}" {3}'.format(*client))
+        print(u'{0}: "{2}" {3}'.format(*client).encode('utf8'))
     sys.exit(1)
 
 api_key = str(os.urandom(26).encode('hex'))
