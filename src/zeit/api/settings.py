@@ -13,7 +13,7 @@
 class Config(object):
 
     ACCESS_TIMEFRAME = 86400
-    ACCESS_TIERS = {'free': 10000, 'pro': 50000, 'max': 100000}
+    ACCESS_TIERS = {'free': 10000, 'pro': 50000, 'max': 1000000}
 
     SCHEMA = '/schemas/database.sql'
     DATABASE = '/var/lib/zon-api/data.db'
