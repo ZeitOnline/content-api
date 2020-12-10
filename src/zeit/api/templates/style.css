@@ -60,7 +60,7 @@
 
 #informatives a.sidenavBlogLink {
 	border: 1px solid #ccc;
-	padding: 3px 6px 3px 21px;
+	padding: 3px 6px 3px 38px;
 	border-radius: 3px;
 	font-size: 10px;
 	font-weight: 600;
@@ -80,7 +80,7 @@
 	padding: 0 10px 10px;
 	margin-bottom: 10px;
 	min-height: 350px;
-	background: transparent url(http://www.zeit.de/static/img/bg_content_eee.gif) repeat-y 782px 0px;
+	background: transparent url(https://static.zeit.de/static/img/bg_content_eee.gif) repeat-y 782px 0px;
 }
 
 #main h1 {
@@ -337,7 +337,7 @@
 }
 
 #main #indexImg {
-	background-image: url(http://images.zeit.de/administratives/header.jpg);
+	background-image: url(https://img.zeit.de/administratives/header.jpg);
 	background-size: cover;
 	width: 740px;
 	height: 250px;
