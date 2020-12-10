@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from datetime import datetime
 import os
 import sqlite3
 import sys
@@ -12,7 +13,8 @@ if len(sys.argv) < 3:
     print('\nLast keys:')
     query = 'SELECT * FROM client ORDER by reset DESC'
     for client in db.execute(query):
-        print(u'{0}: "{2}" {3}'.format(*client).encode('utf8'))
+        reset = datetime.fromtimestamp(client[5])
+        print(u'{0}: "{2}" {3} ({reset})'.format(*client, reset=reset).encode('utf8'))
     sys.exit(1)
 
 api_key = str(os.urandom(26).encode('hex'))
