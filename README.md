@@ -38,9 +38,18 @@ Email to [api@zeit.de](mailto:api@zeit.de).
 Check out the repository, change to the project folder and then bootstrap the
 project like this:
 ```bash
-$ python bootstrap.py
+$ ./bootstrap.sh  # requires python2.7 and virtualenv to be installed
 ```
-Now run buildout with the development configuration:
+
+Run the server like this:
+```bash
+$ bin/api
+$ bin/doc
+```
+
+## Local solr
+
+Run buildout with the development configuration:
 ```bash
 $ bin/buildout -c dev.cfg
 ```

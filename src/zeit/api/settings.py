@@ -50,13 +50,9 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
 
-    DOC_URL = 'http://dev-test.zeit.de:8080'
-    API_URL = 'http://api-test.zeit.de:8080'
-    SOLR_URL = 'http://127.0.0.1:8983/solr'
-
-    import urllib
-    if urllib.urlopen(SOLR_URL).getcode() == 404:
-        SOLR_URL = 'http://developer.zeit.de:8983/solr'
+    DOC_URL = 'http://localhost:9090'
+    API_URL = 'http://localhost:9091'
+    SOLR_URL = 'http://developer.zeit.de:8983/solr'
 
     try:
         import private
