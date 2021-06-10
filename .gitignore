@@ -2,10 +2,12 @@
 *.egg
 *.egg-info
 *.wsgi
+.Python
 dist
 build
 eggs
 etc
+include
 lib
 parts
 bin
