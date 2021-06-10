@@ -18,7 +18,8 @@
 	<table id="signUpForm">
 		<tr>
 			<td>
-				<div class="g-recaptcha" data-sitekey="{{ recaptcha }}"></div>
+				<div class="g-recaptcha" data-sitekey="{{ recaptcha }}"
+             data-callback="captchaSuccess"></div>
 			</td>
 			<td>
 				<input type="text" name="name" placeholder="Your name">
