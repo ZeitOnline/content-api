@@ -4,11 +4,6 @@
 
 <h2>Request an API key</h2>
 
-<p>Accessing our API requires a key. Automatic sign up is currently disabled,
-but you can drop us an <a href="mailto:api@zeit.de">email</a>,
-stating your name and intent, and we will generate a key for you.</p>
-
-<!--
 <p>Accessing our content requires an API key. To request one, simply
   sign up with your full name and a valid Email address. A key will be
   generated for you right here on this page. At the moment we offer free
@@ -17,16 +12,13 @@ stating your name and intent, and we will generate a key for you.</p>
 <h3>Sign up</h3>
 
 <script type="text/javascript"
-	src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-<script type="text/javascript">
-	var RecaptchaOptions = {theme : 'custom', custom_theme_widget: 'signUpForm'};
-</script>
+	src="https://www.google.com/recaptcha/api.js"></script>
 
 <div id="signUpWrapper">
 	<table id="signUpForm">
 		<tr>
 			<td>
-				<div id="recaptcha_image"></div>
+				<div class="g-recaptcha" data-sitekey="{{ recaptcha }}"></div>
 			</td>
 			<td>
 				<input type="text" name="name" placeholder="Your name">
@@ -34,13 +26,7 @@ stating your name and intent, and we will generate a key for you.</p>
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<input type="text" name="recaptcha_response_field"
-					id="recaptcha_response_field" placeholder="Enter the words above">
-				<script type="text/javascript"
-					src="http://www.google.com/recaptcha/api/challenge?k={{ recaptcha }}">
-				</script>
-			</td>
+			<td></td>
 			<td>
 				<input type="checkbox" name="agreement" required>
 				<div id="signUpAgreement">
@@ -54,7 +40,6 @@ stating your name and intent, and we will generate a key for you.</p>
 	<div id="signUpError">
 	</div>
 </div>
--->
 
 <script>
 function readKey() {
@@ -81,6 +66,10 @@ function flashError(errorMessage) {
 	jQuery('#signUpForm, #signUpError').toggle(100).delay(2000).toggle(100);
 }
 
+function captchaSuccess(response) {
+  jQuery('#signUpForm').data('captcha', response);
+}
+
 function getKey() {
 	jQuery.ajax({
 		type: 'POST',
@@ -88,8 +77,7 @@ function getKey() {
 		data: {
             'name': jQuery('input[name="name"]').val(),
             'email': jQuery('input[name="email"]').val(),
-            'challenge': Recaptcha.get_challenge(),
-            'response': Recaptcha.get_response()
+            'response': jQuery('#signUpForm').data('captcha')
         },
 		timeout: 1000,
 		success: function(data) {
@@ -103,12 +91,6 @@ function getKey() {
 		}
 	});
 }
-
-function showRecaptcha(element) {
-		Recaptcha.create("6Lel8tsSAAAAAKObChJnz-ITIplR2fcibJrCsbQd", element, {
-	 	theme: "white",
-		callback: Recaptcha.focus_response_field});
-	}
 
 jQuery('document').ready(function() {
 	var key = readKey();
@@ -125,7 +107,7 @@ jQuery('#send').click(function() {
 		case jQuery('input[name="email"]').val().length == 0:
 			flashError('Please fill in a valid email address.');
 			break;
-		case jQuery('input[name="recaptcha_response_field"]').val().length == 0:
+		case !jQuery('#signUpForm').data('captcha'):
 			flashError('Please enter the captcha.');
 			break;
 		/*case !jQuery('input[name="agreement"]').attr('checked'):

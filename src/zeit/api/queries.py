@@ -288,7 +288,6 @@ class RegisterClientQuery(Query):
     def __init__(self, **kwargs):
         self.name = parameters.StrParam()
         self.email = parameters.StrParam()
-        self.challenge = parameters.StrParam()
         self.response = parameters.StrParam()
         super(RegisterClientQuery, self).__init__(**kwargs)
 
@@ -297,14 +296,17 @@ class RegisterClientQuery(Query):
             return True
         data = urllib.urlencode(
             dict(
-                privatekey=current_app.config['RECAPTCHA_PRIVATE_KEY'],
+                secret=current_app.config['RECAPTCHA_PRIVATE_KEY'],
                 remoteip=request.remote_addr,
-                challenge=self.challenge.value,
-                response=self.response.value
+                response=self.response.value,
             )
         )
-        url = 'http://www.google.com/recaptcha/api/verify'
-        return 'true' in urllib.urlopen(url, data).readline()
+        url = 'https://www.google.com/recaptcha/api/siteverify'
+        try:
+            response = json.load(urllib.urlopen(url, data))
+            return response['success']
+        except Exception:
+            return False
 
     def push(self):
         empty = self.name.value == '' or self.email.value == ''

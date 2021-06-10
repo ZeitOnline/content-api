@@ -131,7 +131,6 @@
 }
 
 #main #signUpWrapper {
-	height: 105px;
 	position: relative;
 }
 
@@ -144,11 +143,8 @@
 	text-align: center;
 }
 
-#main #signUpWrapper #recaptcha_image {
-	margin: auto;
-}
-
-#main #signUpWrapper #signUpForm input {
+#main #signUpWrapper #signUpForm input[name="name"],
+#main #signUpWrapper #signUpForm input[name="email"] {
 	width: 288px;
 }
 
