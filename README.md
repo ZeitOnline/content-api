@@ -8,7 +8,7 @@ ZEIT ONLINE content API - A [flask](http://flask.pocoo.org/) –
 
 ### What is this?
 This is the ZEIT ONLINE content API project as available at
-http://developer.zeit.de. It enables you to access articles and corresponding
+https://developer.zeit.de. It enables you to access articles and corresponding
 metadata from the ZEIT newspaper archive, as well as recent articles from ZEIT
 and ZEIT ONLINE.
 
@@ -19,7 +19,7 @@ with the API, take a look at the code, file a bug report or request a feature.
 
 ### Where are the docs?
 You can find the documentation at our developer portal over at
-http://developer.zeit.de
+https://developer.zeit.de
 
 ### Can I run the API locally?
 Yes. It is tailored to the infrastructure we have here at ZEIT ONLINE, though.

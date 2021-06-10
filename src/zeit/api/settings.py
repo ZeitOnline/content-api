@@ -36,8 +36,8 @@ class Config(object):
 
 class ProductionConfig(Config):
 
-    DOC_URL = 'http://developer.zeit.de'
-    API_URL = 'http://api.zeit.de'
+    DOC_URL = 'https://developer.zeit.de'
+    API_URL = 'https://api.zeit.de'
     SOLR_URL = 'http://127.0.0.1:8983/solr'
 
     try:

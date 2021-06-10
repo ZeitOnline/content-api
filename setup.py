@@ -6,7 +6,7 @@ setup(
     version = '0.4',
     author = 'Nicolas Drebenstedt',
     author_email = 'nicolas.drebenstedt@zeit.de',
-    url = 'http://developer.zeit.de',
+    url = 'https://github.com/ZeitOnline/content-api',
     package_dir = {'': 'src'},
     packages = find_packages('src'),
     namespace_packages = ['zeit',],
